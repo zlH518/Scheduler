@@ -3,7 +3,8 @@ import numpy as np
 import os
 import json
 import glob
-from config import config,Task
+from config import config,Task,ALLTasks
+import matplotlib.pyplot as plt
 
 nodeNum=config['nodeNum']
 cardsPerNode=config['cardsPerNode']
@@ -37,45 +38,19 @@ for i,df in enumerate(dataframes):
     df['spec.resource.flavor_id'] = df['spec.resource.flavor_id'].replace('modelarts.pool.visual.2xlarge', 2)
     df['spec.resource.flavor_id'] = df['spec.resource.flavor_id'].replace('modelarts.pool.visual.xlarge', 1)
     df = df.dropna(subset=['scheduling_time'])
-    dfs[i] = [Task(row['status.start_time'],row['schedulingTime,createTime,duration,cards']) for index, row in df.iterrows()]
-print(1)
+    dfs[i] = [Task(row['status.start_time'],row['scheduling_time'],row['metadata.create_time'],row['status.duration'],row['spec.resource.flavor_id']) for index, row in df.iterrows()]
 
+data=[]
+for df in dfs:
+    for d in df:
+        data.append(d)
+allData=ALLTasks(['startTime','schedulingTime','createTime','duration','cards'],data)
+print(len(data))
 
+cards_counts = np.unique(allData.matrix[:, 4], return_counts=True)
 
-
-
-
-
-
-
-
-
-
-# DATAPATH="C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data\*.json"
-# data=glob.glob(DATAPATH)
-# titles=glob.glob(DATAPATH)
-#
-#
-# dfs=[]      #only complete
-# sum=0
-# for title in titles:
-#     if title.endswith('.json'):
-#         with open(title,'r') as f:
-#             json_data = json.load(f)
-#             dft = pd.DataFrame(json_data)
-#             dft.reset_index(inplace=True)
-#             dft=dft[dft['status.phase']=='Completed']
-#             sum+=len(dft)
-#             dft = dft.drop('index',axis=1)
-#             dfs.append(dft)
-#
-#
-# df1,df2,df3,df4,df5,df6 = dfs
-# dataframes = [df1,df2,df3,df4,df5,df6]
-# for df in dataframes:
-#     mask = df['status.start_time'].isna() | df['metadata.create_time'].isna() | (df['status.start_time']== None) | (df['metadata.create_time']== None) | (df['status.start_time']==0) | (df['metadata.create_time']==0)
-#     df['scheduling_time'] = np.where(mask,np.nan, df['status.start_time']-df['metadata.create_time'])
-#
-# for df in dataframes:
-#     df = df.dropna(subset=['scheduling_time'])
-# pd.to_datetime('1708606592849', unit='ms')
+plt.figure(figsize=(8, 8))
+plt.pie(cards_counts[1], labels=cards_counts[0], autopct='%1.1f%%', startangle=90)
+plt.axis('equal')
+plt.title('Distribution of Cards')
+plt.show()
