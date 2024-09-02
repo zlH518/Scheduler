@@ -77,15 +77,13 @@ class Nodes:
 
     def getEmptyNode(self, need):
         if next((node for node in self.usedNodes if node.remainCards >= need), None) is not None:
-            node=next((node for node in self.usedNodes if node.remainCards >= need), None)
-            del self.usedNodes[next((index for index, node in enumerate(self.usedNodes) if node.remainCards >= need), None)]
-            return node
+            index=next((index for index,node in enumerate(self.usedNodes) if node.remainCards >= need), None)
+            return 1,index
         elif next((node for node in self.emptyNodes if node.remainCards >= need), None) is not None:
-            node=next((node for node in self.emptyNodes if node.remainCards >= need), None)
-            del self.emptyNodes[next((index for index, node in enumerate(self.emptyNodes) if node.remainCards >= need), None)]
-            return node
+            index=next((index for index,node in enumerate(self.emptyNodes) if node.remainCards >= need), None)
+            return 2,index
         else:
-            return None
+            return None,None
 
     def putTask(self, task: Task,currentTime:int):
         '''
@@ -94,9 +92,15 @@ class Nodes:
         :param currentTime:
         :return:
         '''
-        node = self.getEmptyNode(task.cards)
-        if node is None:
+        flag,index = self.getEmptyNode(task.cards)
+        if flag is None:
             return False
+        if flag == 1:
+            node = self.usedNodes[index]
+            del self.usedNodes[index]
+        else:
+            node = self.emptyNodes[index]
+            del self.emptyNodes[index]
         task.flagTime = currentTime
         node.remainCards -= task.cards
         node.tasks.append(task)

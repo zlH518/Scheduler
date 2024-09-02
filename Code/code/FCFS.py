@@ -5,9 +5,9 @@ import json
 import glob
 from config import config,Task,ALLTasks,Nodes
 import matplotlib.pyplot as plt
-from torch.utils.tensorboard import SummaryWriter
-
-writer = SummaryWriter('C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\log')
+# from torch.utils.tensorboard import SummaryWriter
+#
+# writer = SummaryWriter('C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\log')
 
 nodeNum=config['nodeNum']
 cardsPerNode=config['cardsPerNode']
@@ -67,16 +67,23 @@ tasksNum=len(sortedTasks)
 count=0
 for currentTime in range(startTime,endTime,10):
     nodes.popTask(currentTime)
-    while sortedTasks[0].createTime <= currentTime:
-        count+=1
-        status=nodes.putTask(sortedTasks[0],currentTime)
-        if status is None:
-            break;
-        del sortedTasks[0]
-        print(f'{count}/{tasksNum}')
-    info=nodes.cal()
-    writer.add_scalar('piecesRate',info['piecesRate'], currentTime)
-    writer.add_scalar('nodeOccupiedRate', info['nodeOccupiedRate'], currentTime)
-    writer.add_scalar('act', info['act'], currentTime)
-    writer.add_scalar('emptycards', info['emptycards'], currentTime)
-writer.close()
+    if len(sortedTasks) == 0:
+        break;
+    else:
+        while sortedTasks[0].createTime <= currentTime:
+            status=nodes.putTask(sortedTasks[0],currentTime)
+            if status is False:
+                break;
+            del sortedTasks[0]
+            count+=1
+            print(f'{count}/{tasksNum}')
+            if len(sortedTasks) == 0:
+                break;
+            # if count==6:
+            #     input()
+    # info=nodes.cal()
+#     writer.add_scalar('piecesRate',info['piecesRate'], currentTime)
+#     writer.add_scalar('nodeOccupiedRate', info['nodeOccupiedRate'], currentTime)
+#     writer.add_scalar('act', info['act'], currentTime)
+#     writer.add_scalar('emptycards', info['emptycards'], currentTime)
+# writer.close()
