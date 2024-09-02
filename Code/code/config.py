@@ -17,6 +17,7 @@ class Task:
         self.durationTime = duration
         self.cards = cards
         self.flagTime=None
+        self.completeTime=None
 
     def __repr__(self):
         return (f"Task(createTime:{self.createTime}, startTime={self.startTime}, "
@@ -52,9 +53,25 @@ class Nodes:
     def __init__(self, nodesNum, cardsPerNode):
         self.emptyNodes = [Node(cardsPerNode) for _ in range(nodesNum)]
         self.usedNodes = []
+        self.completed=[]
+        self.durationTime=[]
 
-    def calUtilization(self):
-        pass
+    def cal(self):
+        '''
+        计算占用率以及碎片率以及act
+        :return:
+        '''
+        pieces=0.0
+        for node in self.usedNodes:
+            pieces += node.remainCards
+        piecesRate = float(pieces/len(self.usedNodes))
+        nodeOccupiedRate=float(len(self.usedNodes)/(len(self.usedNodes)+len(self.emptyNodes)))
+        act=np.mean(np.array(self.durationTime))
+        return {
+            'piecesRate':piecesRate,
+            'nodeOccupiedRate':nodeOccupiedRate,
+            'act':act
+        }
 
     def getEmptyNode(self, need):
         if next((node for node in self.usedNodes if node.remainCards > need), None) is not None:
@@ -84,7 +101,7 @@ class Nodes:
         self.usedNodes.append(node)
         return True
 
-    def popTask(self,currentTime):
+    def popTask(self, currentTime):
         '''
         将结束的任务从node中释放
         :return:
@@ -97,6 +114,9 @@ class Nodes:
                     if node.remainCards == config['cardsPerNode']:
                         self.usedNodes.remove(index)
                         self.emptyNodes.append(node)
+                    task.completeTime = currentTime
+                    self.completed.append(task)
+                    self.durationTime.append(currentTime-task.createTime)
 
     def __len__(self):
         return len(self.emptyNodes) + len(self.usedNodes)
