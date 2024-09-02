@@ -47,10 +47,34 @@ for df in dfs:
 allData=ALLTasks(['startTime','schedulingTime','createTime','duration','cards'],data)
 print(len(data))
 
-cards_counts = np.unique(allData.matrix[:, 4], return_counts=True)
+# cards_counts = np.unique(allData.matrix[:, 4], return_counts=True)
+#
+# plt.figure(figsize=(8, 8))
+# plt.pie(cards_counts[1], labels=cards_counts[0], autopct='%1.1f%%', startangle=90)
+# plt.axis('equal')
+# plt.title('Distribution of Cards')
+# plt.show()
 
-plt.figure(figsize=(8, 8))
-plt.pie(cards_counts[1], labels=cards_counts[0], autopct='%1.1f%%', startangle=90)
-plt.axis('equal')
-plt.title('Distribution of Cards')
-plt.show()
+
+sortedTasks = sorted(allData.allTask, key=lambda x: x.createTime)
+
+nodeStatus = {i: {'available_cards': cardsPerNode, 'next_task_start': 0} for i in range(nodeNum)}
+
+schedule_result = []
+
+# 遍历排序后的任务列表
+for task in sorted_tasks:
+    # 找到第一个可用的节点
+    for node_id, status in node_status.items():
+        if status['available_cards'] >= task.cards and (status['next_task_start'] == 0 or task.startTime >= status['next_task_start']):
+            # 更新节点状态
+            node_status[node_id]['available_cards'] -= task.cards
+            node_status[node_id]['next_task_start'] = task.startTime + task.durationTime
+            # 记录调度结果
+            schedule_result.append((node_id, task))
+            break
+
+# 打印调度结果
+for result in schedule_result:
+    node_id, task = result
+    print(f"Node {node_id} scheduled Task with create time {task.createTime}, start time {task.startTime}, duration {task.durationTime}, cards {task.cards}")

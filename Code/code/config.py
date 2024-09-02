@@ -27,9 +27,36 @@ class ALLTasks:
     def __len__(self):
         return self.matrix.shape[0]
 
+class Node:
+    def __init__(self,cardsPerNode:int):
+        self.cards=cardsPerNode
+        self.tasks=[]
+        self.remainCards=cardsPerNode
+
+class Nodes:
+    def __init__(self,nodesNum,cardsPerNode):
+        self.nodes=[Node(cardsPerNode) for _ in range(nodesNum)]
+        self.cards=np.array([cardsPerNode for _ in range(nodesNum)],dtype=np.int)
+
+    def calUtilization(self):
+        pass
+
+    def getEmptyNode(self,need):
+        return np.where(self.cards>need)[0]
+
+    def putTask(self,idx,task:Task):
+        self.nodes[idx].tasks.append(task)
+        self.nodes[idx].remainCards-=task.cards
+        self.cards[idx]
+    def __len__(self):
+        return len(self.nodes)
+
+
+
+
 config={
     'dataPath':"C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum':6000,
+    'nodeNum':100,
     'cardsPerNode':8,
     'theat':0.5,
     'tao':5
