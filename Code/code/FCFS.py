@@ -3,8 +3,11 @@ import numpy as np
 import os
 import json
 import glob
-from config import config,Task,ALLTasks
+from config import config,Task,ALLTasks,Nodes
 import matplotlib.pyplot as plt
+from torch.utils.tensorboard import SummaryWriter
+
+writer = SummaryWriter('C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\log')
 
 nodeNum=config['nodeNum']
 cardsPerNode=config['cardsPerNode']
@@ -44,7 +47,7 @@ data=[]
 for df in dfs:
     for d in df:
         data.append(d)
-allData=ALLTasks(['startTime','schedulingTime','createTime','duration','cards'],data)
+allData=ALLTasks(['startTime','schedulingTime','createTime','duration','cards','endTime'],data)
 print(len(data))
 
 # cards_counts = np.unique(allData.matrix[:, 4], return_counts=True)
@@ -57,24 +60,23 @@ print(len(data))
 
 
 sortedTasks = sorted(allData.allTask, key=lambda x: x.createTime)
-
-nodeStatus = {i: {'available_cards': cardsPerNode, 'next_task_start': 0} for i in range(nodeNum)}
-
-schedule_result = []
-
-# 遍历排序后的任务列表
-for task in sorted_tasks:
-    # 找到第一个可用的节点
-    for node_id, status in node_status.items():
-        if status['available_cards'] >= task.cards and (status['next_task_start'] == 0 or task.startTime >= status['next_task_start']):
-            # 更新节点状态
-            node_status[node_id]['available_cards'] -= task.cards
-            node_status[node_id]['next_task_start'] = task.startTime + task.durationTime
-            # 记录调度结果
-            schedule_result.append((node_id, task))
-            break
-
-# 打印调度结果
-for result in schedule_result:
-    node_id, task = result
-    print(f"Node {node_id} scheduled Task with create time {task.createTime}, start time {task.startTime}, duration {task.durationTime}, cards {task.cards}")
+nodes=Nodes(nodesNum=config['nodeNum'], cardsPerNode=config['cardsPerNode'])
+startTime=int(sortedTasks[0].createTime)
+endTime=int(max(allData.matrix[0]+allData.matrix[1]))
+tasksNum=len(sortedTasks)
+count=0
+for currentTime in range(startTime,endTime,10):
+    nodes.popTask(currentTime)
+    while sortedTasks[0].createTime <= currentTime:
+        count+=1
+        status=nodes.putTask(sortedTasks[0],currentTime)
+        if status is None:
+            break;
+        del sortedTasks[0]
+        print(f'{count}/{tasksNum}')
+    info=nodes.cal()
+    writer.add_scalar('piecesRate',info['piecesRate'], currentTime)
+    writer.add_scalar('nodeOccupiedRate', info['nodeOccupiedRate'], currentTime)
+    writer.add_scalar('act', info['act'], currentTime)
+    writer.add_scalar('emptycards', info['emptycards'], currentTime)
+writer.close()

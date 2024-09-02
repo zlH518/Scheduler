@@ -2,7 +2,7 @@ import numpy as np
 
 config = {
     'dataPath': "C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum': 100,
+    'nodeNum': 10,
     'cardsPerNode': 8,
     'theat': 0.5,
     'tao': 5
@@ -34,7 +34,8 @@ class ALLTasks:
         createTime = np.array([task.createTime for task in data])
         duration = np.array([task.durationTime for task in data])
         cards = np.array([task.cards for task in data])
-        self.matrix = np.column_stack((startTime, schedulingTime, createTime, duration, cards))
+        endTime = np.array([task.startTime+task.durationTime for task in data])
+        self.matrix = np.column_stack((startTime, schedulingTime, createTime, duration, cards, endTime))
 
     def __len__(self):
         return self.matrix.shape[0]
@@ -64,24 +65,25 @@ class Nodes:
         pieces=0.0
         for node in self.usedNodes:
             pieces += node.remainCards
-        piecesRate = float(pieces/len(self.usedNodes))
+        piecesRate = float(pieces/len(self.usedNodes)) if len(self.usedNodes)!=0 else 0.0
         nodeOccupiedRate=float(len(self.usedNodes)/(len(self.usedNodes)+len(self.emptyNodes)))
         act=np.mean(np.array(self.durationTime))
         return {
             'piecesRate':piecesRate,
             'nodeOccupiedRate':nodeOccupiedRate,
-            'act':act
+            'act':act,
+            'emptycards':len(self.emptyNodes)
         }
 
     def getEmptyNode(self, need):
-        if next((node for node in self.usedNodes if node.remainCards > need), None) is not None:
-            self.usedNodes.remove(
-                next((index for index, node in enumerate(self.usedNodes) if node.remainCards > need), None))
-            return next((node for node in self.usedNodes if node.remainCards > need), None)
-        elif next((node for node in self.emptyNodes if node.remainCards > need), None) is not None:
-            self.usedNodes.remove(
-                next((index for index, node in enumerate(self.usedNodes) if node.remainCards > need), None))
-            return next((node for node in self.emptyNodes if node.remainCards > need), None)
+        if next((node for node in self.usedNodes if node.remainCards >= need), None) is not None:
+            node=next((node for node in self.usedNodes if node.remainCards >= need), None)
+            del self.usedNodes[next((index for index, node in enumerate(self.usedNodes) if node.remainCards >= need), None)]
+            return node
+        elif next((node for node in self.emptyNodes if node.remainCards >= need), None) is not None:
+            node=next((node for node in self.emptyNodes if node.remainCards >= need), None)
+            del self.emptyNodes[next((index for index, node in enumerate(self.emptyNodes) if node.remainCards >= need), None)]
+            return node
         else:
             return None
 
@@ -107,12 +109,12 @@ class Nodes:
         :return:
         '''
         for index,node in enumerate(self.usedNodes):
-            for task in node.tasks:
+            for index2,task in enumerate(node.tasks):
                 if currentTime-task.flagTime >= task.durationTime:
                     node.remainCards += task.cards
-                    node.tasks.remove(task)
+                    del node.tasks[index2]
                     if node.remainCards == config['cardsPerNode']:
-                        self.usedNodes.remove(index)
+                        del self.usedNodes[index]
                         self.emptyNodes.append(node)
                     task.completeTime = currentTime
                     self.completed.append(task)
