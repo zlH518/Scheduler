@@ -2,7 +2,7 @@ import numpy as np
 
 config = {
     'dataPath': "C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum': 10,
+    'nodeNum': 50,
     'cardsPerNode': 8,
     'theat': 0.5,
     'tao': 5
@@ -128,4 +128,9 @@ class Nodes:
         return len(self.emptyNodes) + len(self.usedNodes)
 
 
+    def isEmpty(self):
+        if len(self.usedNodes) == 0:
+            return True
+        else:
+            return False
 

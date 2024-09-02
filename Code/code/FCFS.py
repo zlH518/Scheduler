@@ -65,15 +65,22 @@ startTime=int(sortedTasks[0].createTime)
 endTime=int(max(allData.matrix[0]+allData.matrix[1]))
 tasksNum=len(sortedTasks)
 count=0
+piecesRate=[]
+nodeOccupiedRate=[]
+act=[]
+emptycards=[]
+time=[]
 for currentTime in range(startTime,endTime,10):
     nodes.popTask(currentTime)
     if len(sortedTasks) == 0:
-        break;
+        if nodes.isEmpty():
+            break
+        continue
     else:
         while sortedTasks[0].createTime <= currentTime:
             status=nodes.putTask(sortedTasks[0],currentTime)
             if status is False:
-                break;
+                break
             del sortedTasks[0]
             count+=1
             print(f'{count}/{tasksNum}')
@@ -81,9 +88,46 @@ for currentTime in range(startTime,endTime,10):
                 break;
             # if count==6:
             #     input()
-    # info=nodes.cal()
+    info=nodes.cal()
+    # print(f'{count}/{tasksNum}',end=' ')
+    # print(info)
+    time.append(currentTime)
+    piecesRate.append(info['piecesRate'])
+    nodeOccupiedRate.append(info['nodeOccupiedRate'])
+    act.append(info['act'])
+    emptycards.append(info['emptycards'])
 #     writer.add_scalar('piecesRate',info['piecesRate'], currentTime)
 #     writer.add_scalar('nodeOccupiedRate', info['nodeOccupiedRate'], currentTime)
 #     writer.add_scalar('act', info['act'], currentTime)
 #     writer.add_scalar('emptycards', info['emptycards'], currentTime)
 # writer.close()
+
+fig, axs = plt.subplots(2, 2, figsize=(14, 10))
+
+axs[0, 0].plot(time, piecesRate, label='piecesRate')
+axs[0, 0].set_title('PiecesRate')
+axs[0, 0].set_xlabel('Time')
+axs[0, 0].set_ylabel('Rate')
+axs[0, 0].legend()
+
+axs[0, 1].plot(time, nodeOccupiedRate, label='nodeOccupiedRate', color='orange')
+axs[0, 1].set_title('Node Occupied Rate')
+axs[0, 1].set_xlabel('Time')
+axs[0, 1].set_ylabel('Rate')
+axs[0, 1].legend()
+
+axs[1, 0].plot(time, act, label='act', color='green')
+axs[1, 0].set_title('ACT')
+axs[1, 0].set_xlabel('Time')
+axs[1, 0].set_ylabel('ACT')
+axs[1, 0].legend()
+
+axs[1, 1].plot(time, emptycards, label='emptycards', color='red')
+axs[1, 1].set_title('Empty Cards')
+axs[1, 1].set_xlabel('Time')
+axs[1, 1].set_ylabel('Count')
+axs[1, 1].legend()
+plt.tight_layout()
+plt.savefig('C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\FCFS.png')
+plt.show()
+
