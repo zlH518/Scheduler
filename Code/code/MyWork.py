@@ -3,7 +3,7 @@ import numpy as np
 import os
 import json
 import glob
-from config import config,Task,ALLTasks,Nodes
+from config import config,Task,ALLTasks,Node
 import matplotlib.pyplot as plt
 
 
@@ -48,4 +48,10 @@ for df in dfs:
         data.append(d)
 allData=ALLTasks(['startTime','schedulingTime','createTime','duration','cards','endTime'],data)
 assert len(data) == len(ALLTasks)
+
+Gnum = config['GNum']
+G = [[Node(cardsPerNode) for _ in range(nodeNum/5)] for _ in range(Gnum)]
+
+
+
 

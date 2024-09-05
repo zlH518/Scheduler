@@ -5,7 +5,8 @@ config = {
     'nodeNum': 50,
     'cardsPerNode': 8,
     'theat': 0.5,
-    'tao': 5
+    'tao': 5,
+    'GNum': 5,
 }
 
 
