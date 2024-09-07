@@ -202,8 +202,10 @@ class Groups:
         elif self.Gnum == 4:
             self.theta = config['theta4']
             self.cardsProcess=config['cardsProcess4']
+        avgNum = nodeNum // self.Gnum
+        leftNum = nodeNum % self.Gnum
         for i in range(self.Gnum):
-            self.G.append(Group(cardsPerNode, nodeNum, self.theta[i], self.cardsProcess[i]))
+            self.G.append(Group(cardsPerNode, avgNum if i != self.Gnum else avgNum+leftNum, self.theta[i], self.cardsProcess[i]))
 
     def getClass(self, cards):
         if self.Gnum == 5:
@@ -211,5 +213,5 @@ class Groups:
         elif self.Gnum == 4:
             return self.G[int(cards // 2)] if cards != 8 else self.G[4]
 
-    def
 
+    def up(self,):
