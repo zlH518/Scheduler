@@ -209,9 +209,15 @@ class Groups:
 
     def getClass(self, cards):
         if self.Gnum == 5:
-            return self.G[int(cards // 2)]
+            return int(cards // 2)
         elif self.Gnum == 4:
-            return self.G[int(cards // 2)] if cards != 8 else self.G[4]
+            return int(cards // 2) if cards != 8 else 3
 
 
-    def up(self,):
+    def up(self,cards):
+        '''
+        将指定cards的组里的空闲资源整合然后放到别的组里面去
+        :param cards:
+        :return:
+        '''
+        index = self.getClass(cards)
