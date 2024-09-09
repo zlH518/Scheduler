@@ -3,7 +3,7 @@ import numpy as np
 import os
 import json
 import glob
-from Buddyconfig import config,Task,ALLTasks,Node
+from Buddyconfig import config,Task,ALLTasks,Node,Groups,getNodeStatus
 import matplotlib.pyplot as plt
 
 
@@ -47,41 +47,42 @@ for df in dfs:
     for d in df:
         data.append(d)
 allData=ALLTasks(['startTime','schedulingTime','createTime','duration','cards','endTime'],data)
-assert len(data) == len(ALLTasks)
+assert len(data) == len(allData)
 
 sortedTasks = sorted(allData.allTask, key=lambda x: x.createTime)
-Gnum = config['GNum']
-G = [[Node(cardsPerNode) for _ in range(nodeNum // 5)] for _ in range(Gnum)]
 startTime=int(sortedTasks[0].createTime)
 endTime=int(max(allData.matrix[0]+allData.matrix[1]))
+nodes=[Node(cardsPerNode) for _ in range(nodeNum)]
+getNodeStatus(nodes)
+groups=Groups(cardsPerNode,nodes)
+getNodeStatus(nodes)
 
-
-for currentTime in range(startTime,endTime,10):
-    G.popTask(currentTime)
-    if len(sortedTasks) == 0:
-        if nodes.isEmpty():
-            break
-        continue
-    else:
-        while sortedTasks[0].createTime <= currentTime:
-            status=nodes.putTask(sortedTasks[0],currentTime)
-            if status is False:
-                break
-            del sortedTasks[0]
-            count+=1
-            print(f'{count}/{tasksNum}')
-            if len(sortedTasks) == 0:
-                break;
-            # if count==6:
-            #     input()
-    info=nodes.cal()
-    # print(f'{count}/{tasksNum}',end=' ')
-    # print(info)
-    time.append(currentTime)
-    piecesRate.append(info['piecesRate'])
-    nodeOccupiedRate.append(info['nodeOccupiedRate'])
-    act.append(info['act'])
-    emptycards.append(info['emptycards'])
+# for currentTime in range(startTime,endTime,10):
+#     G.popTask(currentTime)
+#     if len(sortedTasks) == 0:
+#         if nodes.isEmpty():
+#             break
+#         continue
+#     else:
+#         while sortedTasks[0].createTime <= currentTime:
+#             status=nodes.putTask(sortedTasks[0],currentTime)
+#             if status is False:
+#                 break
+#             del sortedTasks[0]
+#             count+=1
+#             print(f'{count}/{tasksNum}')
+#             if len(sortedTasks) == 0:
+#                 break;
+#             # if count==6:
+#             #     input()
+#     info=nodes.cal()
+#     # print(f'{count}/{tasksNum}',end=' ')
+#     # print(info)
+#     time.append(currentTime)
+#     piecesRate.append(info['piecesRate'])
+#     nodeOccupiedRate.append(info['nodeOccupiedRate'])
+#     act.append(info['act'])
+#     emptycards.append(info['emptycards'])
 
 
 

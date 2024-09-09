@@ -37,7 +37,7 @@ class Group:
 
 
 # 示例使用
-nodes = [Node(8) for _ in range(3)]  # 创建3个节点，每个节点有8张卡
+nodes = [Node(8) for _ in range(6)]  # 创建3个节点，每个节点有8张卡
 group = Group(6, nodes, 0.5)  # 假设每个包打包4张卡
 
 # 打印生成的包和节点的卡片数量

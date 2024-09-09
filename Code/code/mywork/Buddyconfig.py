@@ -1,9 +1,9 @@
 import numpy as np
-from typing import List,Iterable
+from typing import List, Iterable
 
 config = {
     'dataPath': "C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum': 50,
+    'nodeNum': 53,
     'cardsPerNode': 8,
     'tao': 5,
     'GNum': 5,
@@ -50,11 +50,19 @@ class Node:
     NodeId = 0
 
     def __init__(self, cardsPerNode: int):
-        self.nodeID = Node.NodeId
+        self.nodeId = Node.NodeId
         Node.NodeId += 1
         self.cards = cardsPerNode
         self.tasks = []
         self.remainCards = cardsPerNode
+
+
+def getNodeStatus(nodes: Iterable[Node]):
+    def nodeStatus(node: Node):
+        print(f'nodeId:{node.nodeId}, cards:{node.cards}, remainCards:{node.remainCards}\n')
+
+    map(nodeStatus, nodes)
+    return None
 
 
 class Package:
@@ -68,6 +76,8 @@ class Package:
 
 
 class Group:
+    GROUPID = 0
+
     def __init__(self, cardsPerPackage: int, nodes: Iterable[Node], theta: float):
         self.cardsPerPackage = cardsPerPackage
         self.emptyPackage = []
@@ -75,55 +85,52 @@ class Group:
         self.theta = theta
         self.completedTask = []
         self.durationTime = []
+        self.groupid = Group.GROUPID
+        Group.GROUPID += 1
         for index, node in enumerate(nodes):
             remainingCards = node.cards
             while remainingCards >= self.cardsPerPackage:
                 self.emptyPackage.append(Package(self.cardsPerPackage, node.nodeId))
                 remainingCards -= self.cardsPerPackage
                 node.remainCards = remainingCards
+        print(f'create Group{self.GROUPID} success! \n '
+              f'cardsPerPackage:{cardsPerPackage}, nodesNum:{len(nodes)}, theta:{theta}\n')
 
     def popTask(self, currentTime):
-        for index, package in enumerate(self.usedPackage):
-            if currentTime - package.task.flagTime >= package.task.durationTime:
-                node.remainCards += task.cards
-                del node.tasks[index2]
-                if node.remainCards == config['cardsPerNode']:
-                    del self.usedNodes[index]
-                    self.emptyNodes.append(node)
-                task.completeTime = currentTime
-                self.completed.append(task)
-                self.durationTime.append(currentTime - task.createTime)
+        pass
 
     def getEmptyNode(self, need):
-        assert need == self.cardsProcess
-        if next((node for node in self.usedNodes if node.remainCards >= need), None) is not None:
-            index = next((index for index, node in enumerate(self.usedNodes) if node.remainCards >= need), None)
-            return 1, index
-        elif next((node for node in self.emptyNodes if node.remainCards >= need), None) is not None:
-            index = next((index for index, node in enumerate(self.emptyNodes) if node.remainCards >= need), None)
-            return 2, index
-        else:
-            return None, None
+        pass
+        # assert need == self.cardsProcess
+        # if next((node for node in self.usedNodes if node.remainCards >= need), None) is not None:
+        #     index = next((index for index, node in enumerate(self.usedNodes) if node.remainCards >= need), None)
+        #     return 1, index
+        # elif next((node for node in self.emptyNodes if node.remainCards >= need), None) is not None:
+        #     index = next((index for index, node in enumerate(self.emptyNodes) if node.remainCards >= need), None)
+        #     return 2, index
+        # else:
+        #     return None, None
 
     def putTask(self, task: Task, currentTime: int):
-        flag, index = self.getEmptyNode(task.cards)
-        if flag is None:
-            return False
-        if flag == 1:
-            node = self.usedNodes[index]
-            del self.usedNodes[index]
-        else:
-            node = self.emptyNodes[index]
-            del self.emptyNodes[index]
-        task.flagTime = currentTime
-        node.remainCards -= task.cards
-        node.tasks.append(task)
-        self.usedNodes.append(node)
-        return True
+        pass
+        # flag, index = self.getEmptyNode(task.cards)
+        # if flag is None:
+        #     return False
+        # if flag == 1:
+        #     node = self.usedNodes[index]
+        #     del self.usedNodes[index]
+        # else:
+        #     node = self.emptyNodes[index]
+        #     del self.emptyNodes[index]
+        # task.flagTime = currentTime
+        # node.remainCards -= task.cards
+        # node.tasks.append(task)
+        # self.usedNodes.append(node)
+        # return True
 
 
 class Groups:
-    def __init__(self, cardsPerNode: int, nodeNum: int):
+    def __init__(self, cardsPerNode: int, nodes: Iterable[Node]):
         self.cardsPerNode = cardsPerNode
         self.Gnum = config['GNum']
         self.G = []
@@ -133,22 +140,13 @@ class Groups:
         elif self.Gnum == 4:
             self.theta = config['theta4']
             self.cardsProcess = config['cardsProcess4']
-        avgNum = nodeNum // self.Gnum
-        leftNum = nodeNum % self.Gnum
+        avgNum = len(nodes) // self.Gnum
         for i in range(self.Gnum):
-            self.G.append(Group(cardsPerNode, avgNum if i != self.Gnum else avgNum + leftNum, self.theta[i],
-                                self.cardsProcess[i]))
+            self.G.append(Group(cardsPerPackage=self.cardsProcess[i], nodes=nodes[i * avgNum:(i + 1) * avgNum] \
+                if i != self.Gnum - 1 else nodes[i * avgNum:], theta=self.theta[i]))
 
     def getClass(self, cards):
         if self.Gnum == 5:
             return int(cards // 2)
         elif self.Gnum == 4:
             return int(cards // 2) if cards != 8 else 3
-
-    def up(self, cards):
-        '''
-        将指定cards的组里的空闲资源整合然后放到别的组里面去
-        :param cards:
-        :return:
-        '''
-        index = self.getClass(cards)
