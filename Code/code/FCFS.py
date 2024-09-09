@@ -3,7 +3,7 @@ import numpy as np
 import os
 import json
 import glob
-from config import config,Task,ALLTasks,Nodes
+from FCFSconfig import config,Task,ALLTasks,Nodes
 import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
 #

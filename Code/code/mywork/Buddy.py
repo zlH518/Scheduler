@@ -3,7 +3,7 @@ import numpy as np
 import os
 import json
 import glob
-from config import config,Task,ALLTasks,Node
+from Buddyconfig import config,Task,ALLTasks,Node
 import matplotlib.pyplot as plt
 
 
