@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import os
 import json
 import glob
 from Buddyconfig import config,Task,ALLTasks,Node,Groups,getNodeStatus
@@ -56,33 +55,45 @@ nodes=[Node(cardsPerNode) for _ in range(nodeNum)]
 getNodeStatus(nodes)
 groups=Groups(cardsPerNode,nodes)
 getNodeStatus(nodes)
+wl=[]
 
-# for currentTime in range(startTime,endTime,10):
-#     G.popTask(currentTime)
-#     if len(sortedTasks) == 0:
-#         if nodes.isEmpty():
-#             break
-#         continue
-#     else:
-#         while sortedTasks[0].createTime <= currentTime:
-#             status=nodes.putTask(sortedTasks[0],currentTime)
-#             if status is False:
-#                 break
-#             del sortedTasks[0]
-#             count+=1
-#             print(f'{count}/{tasksNum}')
-#             if len(sortedTasks) == 0:
-#                 break;
-#             # if count==6:
-#             #     input()
-#     info=nodes.cal()
-#     # print(f'{count}/{tasksNum}',end=' ')
-#     # print(info)
-#     time.append(currentTime)
-#     piecesRate.append(info['piecesRate'])
-#     nodeOccupiedRate.append(info['nodeOccupiedRate'])
-#     act.append(info['act'])
-#     emptycards.append(info['emptycards'])
+for currentTime in range(startTime,endTime,10):
+    while sortedTasks[0].createTime <= currentTime:
+        task=sortedTasks[0]
+        sortedTasks.remove(0)
+        wl.append(task)
+
+    #先处理之前的wl里面的task
+    while len(wl) != 0:
+        task=wl[0]
+        group=groups[task.cards]
+
+
+    # G.popTask(currentTime)
+    # if len(sortedTasks) == 0:
+    #     if nodes.isEmpty():
+    #         break
+    #     continue
+    # else:
+    #     while sortedTasks[0].createTime <= currentTime:
+    #         status=nodes.putTask(sortedTasks[0],currentTime)
+    #         if status is False:
+    #             break
+    #         del sortedTasks[0]
+    #         count+=1
+    #         print(f'{count}/{tasksNum}')
+    #         if len(sortedTasks) == 0:
+    #             break;
+    #         # if count==6:
+    #         #     input()
+    # info=nodes.cal()
+    # # print(f'{count}/{tasksNum}',end=' ')
+    # # print(info)
+    # time.append(currentTime)
+    # piecesRate.append(info['piecesRate'])
+    # nodeOccupiedRate.append(info['nodeOccupiedRate'])
+    # act.append(info['act'])
+    # emptycards.append(info['emptycards'])
 
 
 

@@ -61,7 +61,8 @@ def getNodeStatus(nodes: Iterable[Node]):
     def nodeStatus(node: Node):
         print(f'nodeId:{node.nodeId}, cards:{node.cards}, remainCards:{node.remainCards}\n')
 
-    map(nodeStatus, nodes)
+    for node in nodes:
+        nodeStatus(node)
     return None
 
 
@@ -93,14 +94,14 @@ class Group:
                 self.emptyPackage.append(Package(self.cardsPerPackage, node.nodeId))
                 remainingCards -= self.cardsPerPackage
                 node.remainCards = remainingCards
+        self.emptyRate = float(self.emptyPackage / (self.emptyPackage+self.usedPackage))
         print(f'create Group{self.GROUPID} success! \n '
               f'cardsPerPackage:{cardsPerPackage}, nodesNum:{len(nodes)}, theta:{theta}\n')
 
     def popTask(self, currentTime):
         pass
 
-    def getEmptyNode(self, need):
-        pass
+    def getEmptyPackage(self, need):
         # assert need == self.cardsProcess
         # if next((node for node in self.usedNodes if node.remainCards >= need), None) is not None:
         #     index = next((index for index, node in enumerate(self.usedNodes) if node.remainCards >= need), None)
@@ -145,8 +146,8 @@ class Groups:
             self.G.append(Group(cardsPerPackage=self.cardsProcess[i], nodes=nodes[i * avgNum:(i + 1) * avgNum] \
                 if i != self.Gnum - 1 else nodes[i * avgNum:], theta=self.theta[i]))
 
-    def getClass(self, cards):
+    def __getitem__(self, item):
         if self.Gnum == 5:
-            return int(cards // 2)
+            return self.G[item//2]
         elif self.Gnum == 4:
-            return int(cards // 2) if cards != 8 else 3
+            return self.G[item//2] if item != 8 else self.G[3]
