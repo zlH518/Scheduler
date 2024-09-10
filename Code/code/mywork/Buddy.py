@@ -69,11 +69,11 @@ for currentTime in range(startTime,endTime,10):
         group=groups[task.cards]
 
 
-    # G.popTask(currentTime)
-    # if len(sortedTasks) == 0:
-    #     if nodes.isEmpty():
-    #         break
-    #     continue
+    G.popTask(currentTime)
+    if len(sortedTasks) == 0:
+        if nodes.isEmpty():
+            break
+        continue
     # else:
     #     while sortedTasks[0].createTime <= currentTime:
     #         status=nodes.putTask(sortedTasks[0],currentTime)
