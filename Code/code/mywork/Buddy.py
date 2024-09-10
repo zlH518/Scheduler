@@ -70,6 +70,7 @@ for currentTime in range(startTime,endTime,10):
         if group is None:   #找不到合适的组那么就直接跳过
             continue
         else:
+            pass
 
 
 
