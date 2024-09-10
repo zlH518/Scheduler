@@ -55,6 +55,7 @@ nodes=[Node(cardsPerNode) for _ in range(nodeNum)]
 getNodeStatus(nodes)
 groups=Groups(cardsPerNode,nodes)
 getNodeStatus(nodes)
+'''这里的队列可以考虑制作一个优先队列，对不同的任务进行优先级的评估'''
 wl=[]
 
 for currentTime in range(startTime,endTime,10):
@@ -63,17 +64,21 @@ for currentTime in range(startTime,endTime,10):
         sortedTasks.remove(0)
         wl.append(task)
 
-    #先处理之前的wl里面的task
-    while len(wl) != 0:
-        task=wl[0]
-        group=groups[task.cards]
+    #依次处理wl里面的每一个task
+    for task in wl:
+        group = groups[task.cards]      #拿到一个合适的组，查找组里的资源
+        if group is None:   #找不到合适的组那么就直接跳过
+            continue
+        else:
 
 
-    G.popTask(currentTime)
-    if len(sortedTasks) == 0:
-        if nodes.isEmpty():
-            break
-        continue
+
+
+    # G.popTask(currentTime)
+    # if len(sortedTasks) == 0:
+    #     if nodes.isEmpty():
+    #         break
+    #     continue
     # else:
     #     while sortedTasks[0].createTime <= currentTime:
     #         status=nodes.putTask(sortedTasks[0],currentTime)

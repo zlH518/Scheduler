@@ -12,6 +12,33 @@ config = {
     'cardsProcess5': [1, 2, 4, 6, 8],
     'cardsProcess4': [1, 2, 4, 8]
 }
+indexMap = {
+    5: lambda item: item // 2,
+    4: lambda item: item // 2 if item != 8 else 3
+}
+indexOrder = indexMap.get(config['Gnum'])
+
+
+def getOrder(item):
+    return indexOrder(item)
+
+
+def getNext(item):
+    index = indexOrder(item) + 1
+    if config['GNum'] == 5:
+        if index > 4:
+            return None
+    elif config['GNum'] == 4:
+        if index > 3:
+            return None
+    return config[f'cardsProcess{config["GNum"]}'][index]
+
+
+def getFront(item):
+    index = indexOrder(item) - 1
+    if index < 0:
+        return None
+    return config[f'cardsProcess{config["GNum"]}'][index]
 
 
 class Task:
@@ -94,7 +121,7 @@ class Group:
                 self.emptyPackage.append(Package(self.cardsPerPackage, node.nodeId))
                 remainingCards -= self.cardsPerPackage
                 node.remainCards = remainingCards
-        self.emptyRate = float(self.emptyPackage / (self.emptyPackage+self.usedPackage))
+        self.emptyRate = float(self.emptyPackage / (self.emptyPackage + self.usedPackage))
         print(f'create Group{self.GROUPID} success! \n '
               f'cardsPerPackage:{cardsPerPackage}, nodesNum:{len(nodes)}, theta:{theta}\n')
 
@@ -102,15 +129,11 @@ class Group:
         pass
 
     def getEmptyPackage(self, need):
-        # assert need == self.cardsProcess
-        # if next((node for node in self.usedNodes if node.remainCards >= need), None) is not None:
-        #     index = next((index for index, node in enumerate(self.usedNodes) if node.remainCards >= need), None)
-        #     return 1, index
-        # elif next((node for node in self.emptyNodes if node.remainCards >= need), None) is not None:
-        #     index = next((index for index, node in enumerate(self.emptyNodes) if node.remainCards >= need), None)
-        #     return 2, index
-        # else:
-        #     return None, None
+        if len(self.emptyPackage) == 0:
+            return None
+        else:
+            '''这里或许可以做更多优化，使得分配的package更优'''
+            return self.emptyPackage[0]
 
     def putTask(self, task: Task, currentTime: int):
         pass
@@ -147,7 +170,10 @@ class Groups:
                 if i != self.Gnum - 1 else nodes[i * avgNum:], theta=self.theta[i]))
 
     def __getitem__(self, item):
-        if self.Gnum == 5:
-            return self.G[item//2]
-        elif self.Gnum == 4:
-            return self.G[item//2] if item != 8 else self.G[3]
+        group = self.G[indexOrder(item)]
+        while group.getEmptyPackage(item) is None:
+            item = getNext(item)
+            if item is not None:
+                group = self.G[indexOrder(item)]
+            else:
+                return None
