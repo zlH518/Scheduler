@@ -16,8 +16,7 @@ indexMap = {
     5: lambda item: item // 2,
     4: lambda item: item // 2 if item != 8 else 3
 }
-indexOrder = indexMap.get(config['Gnum'])
-
+indexOrder = indexMap.get(config['GNum'])
 
 def getOrder(item):
     return indexOrder(item)
@@ -42,6 +41,7 @@ def getFront(item):
 
 
 class Task:
+    TaskId = 0
     def __init__(self, startTime, schedulingTime, createTime, duration, cards):
         self.startTime = startTime
         self.schedulingTime = schedulingTime
@@ -50,6 +50,8 @@ class Task:
         self.cards = cards
         self.flagTime = None
         self.completeTime = None
+        self.taskId = Task.TaskId
+        Task.TaskId += 1
 
     def __repr__(self):
         return (f"Task(createTime:{self.createTime}, startTime={self.startTime}, "
@@ -83,6 +85,8 @@ class Node:
         self.tasks = []
         self.remainCards = cardsPerNode
 
+
+nodes=[Node(config['cardsPerNode']) for _ in range(config['nodeNum'])]
 
 def getNodeStatus(nodes: Iterable[Node]):
     def nodeStatus(node: Node):
@@ -121,12 +125,22 @@ class Group:
                 self.emptyPackage.append(Package(self.cardsPerPackage, node.nodeId))
                 remainingCards -= self.cardsPerPackage
                 node.remainCards = remainingCards
-        self.emptyRate = float(self.emptyPackage / (self.emptyPackage + self.usedPackage))
+        self.emptyRate = float(len(self.emptyPackage) / (len(self.emptyPackage) + len(self.usedPackage)))
         print(f'create Group{self.GROUPID} success! \n '
               f'cardsPerPackage:{cardsPerPackage}, nodesNum:{len(nodes)}, theta:{theta}\n')
 
     def popTask(self, currentTime):
-        pass
+        #查看所有用的package，中是否有需要释放的task
+        for package in self.usedPackage:
+            nodeId=package.nodeId
+            if currentTime - package.task.flagTime >= package.task.durationTime:
+                nodes[nodeId].remainCards += package.task.cards
+                index = next((i for i, task in enumerate(nodes[nodeId].tasks) if task.taskId == package.task.taskId), None)
+                del nodes[nodeId].tasks[index]
+                nodes[nodeId].remainCards += package.task.cards
+                self.usedPackage.remove(package)
+                self.completedTask.append(package.task.taskId)
+                self.durationTime.append(currentTime - package.task.createTime)
 
     def getEmptyPackage(self, need):
         if len(self.emptyPackage) == 0:
@@ -136,21 +150,15 @@ class Group:
             return self.emptyPackage[0]
 
     def putTask(self, task: Task, currentTime: int):
-        pass
-        # flag, index = self.getEmptyNode(task.cards)
-        # if flag is None:
-        #     return False
-        # if flag == 1:
-        #     node = self.usedNodes[index]
-        #     del self.usedNodes[index]
-        # else:
-        #     node = self.emptyNodes[index]
-        #     del self.emptyNodes[index]
-        # task.flagTime = currentTime
-        # node.remainCards -= task.cards
-        # node.tasks.append(task)
-        # self.usedNodes.append(node)
-        # return True
+        package = self.getEmptyPackage(task.cards)
+        package.task = task
+        del self.emptyPackage[0]
+        task.flagTime = currentTime
+        nodeId=package.nodeId
+        nodes[nodeId].remainCards -= task.cards
+        nodes[nodeId].tasks.append(task)
+        self.usedPackage.append(package)
+        return True
 
 
 class Groups:
@@ -177,3 +185,7 @@ class Groups:
                 group = self.G[indexOrder(item)]
             else:
                 return None
+
+    def popTask(self,currentTime):
+        for group in self.G:
+            group.popTask(currentTime)

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import json
 import glob
-from Buddyconfig import config,Task,ALLTasks,Node,Groups,getNodeStatus
+from Buddyconfig import config,Task,ALLTasks,Node,Groups,getNodeStatus,nodes
 import matplotlib.pyplot as plt
 
 
@@ -51,17 +51,23 @@ assert len(data) == len(allData)
 sortedTasks = sorted(allData.allTask, key=lambda x: x.createTime)
 startTime=int(sortedTasks[0].createTime)
 endTime=int(max(allData.matrix[0]+allData.matrix[1]))
-nodes=[Node(cardsPerNode) for _ in range(nodeNum)]
 getNodeStatus(nodes)
 groups=Groups(cardsPerNode,nodes)
 getNodeStatus(nodes)
-'''这里的队列可以考虑制作一个优先队列，对不同的任务进行优先级的评估'''
+'''这里的队列可以考虑制作一个优先队列，对不同的任务进行优先级的评估,
+    目前对优先级的评估包括小任务，以及对当前节点状态的适配度，
+    或者可不可以用强化学习来做
+'''
 wl=[]
 
 for currentTime in range(startTime,endTime,10):
+    #首先查看是否有需要释放的任务
+    groups.popTask(currentTime)
+
+    #查看是否到了需要调度的时刻，需要则对各个组中空闲的资源重新分配
     while sortedTasks[0].createTime <= currentTime:
         task=sortedTasks[0]
-        sortedTasks.remove(0)
+        del sortedTasks[0]
         wl.append(task)
 
     #依次处理wl里面的每一个task
@@ -69,38 +75,6 @@ for currentTime in range(startTime,endTime,10):
         group = groups[task.cards]      #拿到一个合适的组，查找组里的资源
         if group is None:   #找不到合适的组那么就直接跳过
             continue
-        else:
-            pass
-
-
-
-
-    # G.popTask(currentTime)
-    # if len(sortedTasks) == 0:
-    #     if nodes.isEmpty():
-    #         break
-    #     continue
-    # else:
-    #     while sortedTasks[0].createTime <= currentTime:
-    #         status=nodes.putTask(sortedTasks[0],currentTime)
-    #         if status is False:
-    #             break
-    #         del sortedTasks[0]
-    #         count+=1
-    #         print(f'{count}/{tasksNum}')
-    #         if len(sortedTasks) == 0:
-    #             break;
-    #         # if count==6:
-    #         #     input()
-    # info=nodes.cal()
-    # # print(f'{count}/{tasksNum}',end=' ')
-    # # print(info)
-    # time.append(currentTime)
-    # piecesRate.append(info['piecesRate'])
-    # nodeOccupiedRate.append(info['nodeOccupiedRate'])
-    # act.append(info['act'])
-    # emptycards.append(info['emptycards'])
-
-
-
+        else:               #如果找到合适的组了就放置任务
+            group.putTask(task,currentTime)
 
