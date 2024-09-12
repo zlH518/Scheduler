@@ -83,14 +83,15 @@ class Node:
         Node.NodeId += 1
         self.cards = cardsPerNode
         self.tasks = []
-        self.remainCards = cardsPerNode
+        self.unpackagedCards = cardsPerNode
+        self.unuesdCards = cardsPerNode
 
 
 nodes=[Node(config['cardsPerNode']) for _ in range(config['nodeNum'])]
 
 def getNodeStatus(nodes: Iterable[Node]):
     def nodeStatus(node: Node):
-        print(f'nodeId:{node.nodeId}, cards:{node.cards}, remainCards:{node.remainCards}\n')
+        print(f'nodeId:{node.nodeId}, cards:{node.cards}, unusedCards:{node.unuesdCards}, unpackagedCards:{node.unpackagedCards}\n')
 
     for node in nodes:
         nodeStatus(node)
@@ -120,11 +121,9 @@ class Group:
         self.groupid = Group.GROUPID
         Group.GROUPID += 1
         for index, node in enumerate(nodes):
-            remainingCards = node.cards
-            while remainingCards >= self.cardsPerPackage:
+            while node.unpackagedCards >= self.cardsPerPackage:
                 self.emptyPackage.append(Package(self.cardsPerPackage, node.nodeId))
-                remainingCards -= self.cardsPerPackage
-                node.remainCards = remainingCards
+                node.unpackagedCards -= self.cardsPerPackage
         self.emptyRate = float(len(self.emptyPackage) / (len(self.emptyPackage) + len(self.usedPackage)))
         print(f'create Group{self.GROUPID} success! \n '
               f'cardsPerPackage:{cardsPerPackage}, nodesNum:{len(nodes)}, theta:{theta}\n')
@@ -134,10 +133,9 @@ class Group:
         for package in self.usedPackage:
             nodeId=package.nodeId
             if currentTime - package.task.flagTime >= package.task.durationTime:
-                nodes[nodeId].remainCards += package.task.cards
+                nodes[nodeId].unuesdCards += package.task.cards
                 index = next((i for i, task in enumerate(nodes[nodeId].tasks) if task.taskId == package.task.taskId), None)
                 del nodes[nodeId].tasks[index]
-                nodes[nodeId].remainCards += package.task.cards
                 self.usedPackage.remove(package)
                 self.completedTask.append(package.task.taskId)
                 self.durationTime.append(currentTime - package.task.createTime)
@@ -151,11 +149,11 @@ class Group:
 
     def putTask(self, task: Task, currentTime: int):
         package = self.getEmptyPackage(task.cards)
-        package.task = task
         del self.emptyPackage[0]
         task.flagTime = currentTime
         nodeId=package.nodeId
-        nodes[nodeId].remainCards -= task.cards
+        package.task = task
+        nodes[nodeId].unuesdCards -= task.cards
         nodes[nodeId].tasks.append(task)
         self.usedPackage.append(package)
         return True
@@ -176,6 +174,16 @@ class Groups:
         for i in range(self.Gnum):
             self.G.append(Group(cardsPerPackage=self.cardsProcess[i], nodes=nodes[i * avgNum:(i + 1) * avgNum] \
                 if i != self.Gnum - 1 else nodes[i * avgNum:], theta=self.theta[i]))
+        #查找所有nodes中是否还有unpackagedCards，按照8，6，4，2，1进行打包放置到对应的组中
+        for node in nodes:
+            while node.unpackagedCards != 0:
+                for cards in reversed(self.cardsProcess):
+                    if node.unpackagedCards % int(cards) == 0:
+                        self.G[indexOrder(int(cards))].emptyPackage.append(Package(int(cards), node.nodeId))
+                        node.unpackagedCards -= int(cards)
+                        break
+                    else:
+                        continue
 
     def __getitem__(self, item):
         group = self.G[indexOrder(item)]
@@ -185,6 +193,7 @@ class Groups:
                 group = self.G[indexOrder(item)]
             else:
                 return None
+        return group
 
     def popTask(self,currentTime):
         for group in self.G:
