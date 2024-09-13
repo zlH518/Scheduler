@@ -2,7 +2,7 @@ import numpy as np
 
 config = {
     'dataPath': "C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum': 50,
+    'nodeNum': 100,
     'cardsPerNode': 8,
     'tao': 5,
     'GNum': 5,

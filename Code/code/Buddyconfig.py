@@ -3,14 +3,15 @@ from typing import List, Iterable
 
 config = {
     'dataPath': "C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum': 53,
+    'nodeNum': 100,
     'cardsPerNode': 8,
     'tao': 5,
     'GNum': 5,
     'theta4': [0.5, 0.5, 0.5, 0.5],
     'theta5': [0.5, 0.5, 0.5, 0.5, 0.5],
     'cardsProcess5': [1, 2, 4, 6, 8],
-    'cardsProcess4': [1, 2, 4, 8]
+    'cardsProcess4': [1, 2, 4, 8],
+    'T': 1000
 }
 indexMap = {
     5: lambda item: item // 2,
@@ -145,6 +146,10 @@ class Group:
                 num += 1
         return num
 
+    def info(self):
+        return  f'{self.groupid}:{self.emptyRate}'
+
+
     def getEmptyPackage(self, need):
         if len(self.emptyPackage) == 0:
             return None
@@ -162,6 +167,28 @@ class Group:
         nodes[nodeId].tasks.append(task)
         self.usedPackage.append(package)
         return True
+
+    def schedule(self):
+        # 创建一个字典来存储相同nodeId的packages
+        packagesByNode = {}
+        for package in self.emptyPackage:
+            if package.nodeId not in packagesByNode:
+                packagesByNode[package.nodeId] = [package]
+            else:
+                # 如果已经存在相同nodeId的package，则先收集起来
+                packagesByNode[package.nodeId].append(package)
+
+        # 更新emptyPackage列表，只包含存在一个package的packageByNode,并从字典中去除
+        self.emptyPackage=[]
+        for item in packagesByNode.values():
+            if len(item) == 1:
+                self.emptyPackage.append(item[0])
+            else:       #这里需要根据
+                pass
+
+
+        # # 重新计算emptyRate
+        # group.emptyRate = float(len(group.emptyPackage) / (len(group.emptyPackage) + len(group.usedPackage)))
 
 
 class Groups:
@@ -205,3 +232,24 @@ class Groups:
         for group in self.G:
              sum += group.popTask(currentTime)
         return sum
+
+    def info(self):
+        # durationTime=[]
+        # for group in self.G:
+        #     durationTime += group.info()
+        # return durationTime
+        str=''
+        for group in self.G:
+            str =str + ' ' + group.info()
+        return str+'\n'
+
+    def durationTime(self):
+        durationTime=[]
+        for group in self.G:
+            durationTime += group.durationTime
+        return np.mean(np.array(durationTime))
+
+    def scheduleResources(self):
+        for group in reversed(self.G[:-1]):
+            if group.emptyRate >= group.theta:
+                group.schedule()
