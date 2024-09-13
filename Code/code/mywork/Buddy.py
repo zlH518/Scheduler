@@ -59,23 +59,35 @@ getNodeStatus(nodes)
     或者可不可以用强化学习来做
 '''
 wl=[]
+num = 0
+sum = 0
 
 for currentTime in range(startTime,endTime,10):
     #首先查看是否有需要释放的任务
-    groups.popTask(currentTime)
+    sum += groups.popTask(currentTime)
 
     #查看是否到了需要调度的时刻，需要则对各个组中空闲的资源重新分配
-    while sortedTasks[0].createTime <= currentTime:
-        task=sortedTasks[0]
-        del sortedTasks[0]
-        wl.insert(0,task)
+    if len(sortedTasks) != 0:
+        while sortedTasks[0].createTime <= currentTime:
+            task=sortedTasks[0]
+            del sortedTasks[0]
+            if len(sortedTasks) == 0:
+                break
+            wl.insert(0,task)
 
+    # print(f'num of wl:{len(wl)}')
     #依次处理wl里面的每一个task
     for task in reversed(wl):
         group = groups[task.cards]      #拿到一个合适的组，查找组里的资源
         if group is None:   #找不到合适的组那么说明没有资源可以处理这个任务，则继续放在wl里面
             continue
         else:               #如果找到合适的组了就放置任务，同时从wl中去除
+            num += 1
             group.putTask(task,currentTime)
             wl.remove(task)
+            print(f'num of task:{num}')
+
+assert sum == num
+print(f'sum:{sum}')
+
 

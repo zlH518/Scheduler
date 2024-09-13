@@ -130,6 +130,7 @@ class Group:
 
     def popTask(self, currentTime):
         #查看所有用的package，中是否有需要释放的task
+        num = 0
         for package in self.usedPackage:
             nodeId=package.nodeId
             if currentTime - package.task.flagTime >= package.task.durationTime:
@@ -139,6 +140,10 @@ class Group:
                 self.usedPackage.remove(package)
                 self.completedTask.append(package.task.taskId)
                 self.durationTime.append(currentTime - package.task.createTime)
+                package.task=None
+                self.emptyPackage.append(package)
+                num += 1
+        return num
 
     def getEmptyPackage(self, need):
         if len(self.emptyPackage) == 0:
@@ -196,5 +201,7 @@ class Groups:
         return group
 
     def popTask(self,currentTime):
+        sum = 0
         for group in self.G:
-            group.popTask(currentTime)
+             sum += group.popTask(currentTime)
+        return sum
