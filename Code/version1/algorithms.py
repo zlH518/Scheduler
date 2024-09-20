@@ -107,5 +107,5 @@ class NF(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    # def run(self, tasks: Iterable):
-    #     print('ok')
+    def run(self, tasks: Iterable):
+        print('ok')
