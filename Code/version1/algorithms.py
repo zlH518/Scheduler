@@ -1,25 +1,111 @@
 from typing import Iterable
+import config
+import node
+from log import logger
 
 
-def FCFS(tasks: Iterable):
-    pass
+class BaseAlgorithm:
+    def __init__(self):
+        self.nodes = [node.BaseNode(config.cards_per_node) for _ in range(config.node_num)]
+        self.algorithm_name = 'BaseAlgorithm'
+    def addTask(self, current_time):
+        logger.log(f"addTask function need implement in {self.algorithm_name}")
+        raise NotImplementedError('Need to implement')
+
+    def popTask(self, current_time):
+        logger.log(f"popTask function need implement in {self.algorithm_name}")
+        raise NotImplementedError('Need to implement')
+
+    def run(self, tasks: Iterable):
+        logger.log(f"run function need implement in {self.algorithm_name}")
+        raise NotImplementedError('Need to implement')
 
 
-def Buddy(tasks: Iterable):
-    pass
+class FCFS(BaseAlgorithm):
+    def __init__(self):
+        super().__init__()
+        self.algorithm_name = 'First Come First Sever'
+
+    def addTask(self, current_time):
+        print('ok')
+
+    def popTask(self, current_time):
+        print('ok')
+
+    def run(self, tasks: Iterable):
+        print('ok')
 
 
-def SJF(tasks: Iterable):
-    pass
+class Buddy(BaseAlgorithm):
+    def __init__(self):
+        super().__init__()
+        self.algorithm_name = 'Buddy'
+
+    def addTask(self, current_time):
+        print('ok')
+
+    def popTask(self, current_time):
+        print('ok')
+
+    def run(self, tasks: Iterable):
+        print('ok')
 
 
-def BF(tasks: Iterable):
-    pass
+class SJF(BaseAlgorithm):
+    def __init__(self):
+        super().__init__()
+        self.algorithm_name = 'Short Job First'
+
+    def addTask(self, current_time):
+        print('ok')
+
+    def popTask(self, current_time):
+        print('ok')
+
+    def run(self, tasks: Iterable):
+        print('ok')
 
 
-def WF(tasks: Iterable):
-    pass
+class BF(BaseAlgorithm):
+    def __init__(self):
+        super().__init__()
+        self.algorithm_name = 'Best First'
+
+    def addTask(self, current_time):
+        print('ok')
+
+    def popTask(self, current_time):
+        print('ok')
+
+    def run(self, tasks: Iterable):
+        print('ok')
 
 
-def NF(tasks: Iterable):
-    pass
+class WF(BaseAlgorithm):
+    def __init__(self):
+        super().__init__()
+        self.algorithm_name = 'Worst First'
+
+    def addTask(self, current_time):
+        print('ok')
+
+    def popTask(self, current_time):
+        print('ok')
+
+    def run(self, tasks: Iterable):
+        print('ok')
+
+
+class NF(BaseAlgorithm):
+    def __init__(self):
+        super().__init__()
+        self.algorithm_name = 'Next First'
+
+    def addTask(self, current_time):
+        print('ok')
+
+    def popTask(self, current_time):
+        print('ok')
+
+    # def run(self, tasks: Iterable):
+    #     print('ok')

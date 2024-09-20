@@ -21,4 +21,4 @@ for algorithm in algorithms:
         每个step中，统计调度前后，wl中任务卡数的变化
         每个step统计的任务的平均等待时间
     '''
-    act, queuetime = algorithm(tasks)
+    algorithm().run(tasks)

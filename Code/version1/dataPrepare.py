@@ -1,7 +1,6 @@
 import pandas as pd
 import glob
 from task import Task
-import tqdm
 from log import logger
 from datetime import datetime
 

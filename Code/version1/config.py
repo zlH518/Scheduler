@@ -12,3 +12,6 @@ step = 10
 node_num = 400
 cards_per_node = 8
 
+FCFS={
+}
+
