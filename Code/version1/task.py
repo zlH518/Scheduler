@@ -1,0 +1,14 @@
+
+
+class Task:
+    def __init__(self, create_time, start_time, cards, duration, gpu_time):
+        self.create_time = create_time
+        self.start_time = start_time
+        self.cards = cards
+        self.gpu_time = gpu_time
+        self.duration_time = duration
+        self.queue_time = None
+
+    @classmethod
+    def create(cls, **kwargs):
+        return cls(kwargs.get('create_time'), kwargs.get('start_time'), kwargs.get('cards'), kwargs.get('duration'), kwargs.get('gpu_time'))

@@ -3,12 +3,12 @@ from typing import List, Iterable
 
 config = {
     'dataPath': "C:\\Users\Administrator\Desktop\IdsLab\任务\SchedulerSystem\Code\data/*.json",
-    'nodeNum': 100,
+    'nodeNum': 50,
     'cardsPerNode': 8,
     'tao': 5,
     'GNum': 5,
     'theta4': [0.5, 0.5, 0.5, 0.5],
-    'theta5': [0.5, 0.5, 0.5, 0.5, 0.5],
+    'theta5': [0.7, 0.5, 0.4, 0.3, 1],
     'cardsProcess5': [1, 2, 4, 6, 8],
     'cardsProcess4': [1, 2, 4, 8],
     'T': 1000

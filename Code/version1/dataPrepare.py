@@ -1,0 +1,20 @@
+import pandas as pd
+import glob
+from task import Task
+import tqdm
+
+
+def read_and_createTasks(file_path):
+    file_name = glob.glob(file_path)
+    tasks = []
+
+    for file in file_name:
+        try:
+            data = pd.read_csv(file, usecols=['submit_time', 'start_time', 'gpu_num',
+                                              'duration', 'gpu_time'])
+            for row in data.itertuples():
+                tasks.append(
+                    Task.create(create_time=row[0], start_time=row[1],
+                                cards=row[2], duration=row[3], gpu_time=row[4]))
+        except Exception as e:
+            print(f"file:{file}: {e}")

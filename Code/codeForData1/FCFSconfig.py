@@ -27,8 +27,6 @@ class Task:
         return (f"Task(createTime:{self.createTime}, startTime={self.startTime}, "
                 f"schedulingTime:{self.schedulingTime},durationTime:{self.durationTime}, "
                 f"cards:{self.cards})\n")
-
-
 class ALLTasks:
     def __init__(self, index: list, data: list):
         self.index = index
