@@ -16,9 +16,14 @@ class BaseAlgorithm:
         logger.log(f"popTask function need implement in {self.algorithm_name}")
         raise NotImplementedError('Need to implement')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         logger.log(f"run function need implement in {self.algorithm_name}")
         raise NotImplementedError('Need to implement')
+
+    def recoder(self, x, y):
+        
+
+
 
 
 class FCFS(BaseAlgorithm):
@@ -32,7 +37,7 @@ class FCFS(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         print('ok')
 
 
@@ -47,7 +52,7 @@ class Buddy(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         print('ok')
 
 
@@ -62,7 +67,7 @@ class SJF(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         print('ok')
 
 
@@ -77,7 +82,7 @@ class BF(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         print('ok')
 
 
@@ -92,7 +97,7 @@ class WF(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         print('ok')
 
 
@@ -107,5 +112,5 @@ class NF(BaseAlgorithm):
     def popTask(self, current_time):
         print('ok')
 
-    def run(self, tasks: Iterable):
+    def run(self, tasks: Iterable, writer):
         print('ok')

@@ -2,7 +2,8 @@ import logging
 import config
 from datetime import datetime
 
-class logger():
+
+class logger:
     __added_empty_line = False
 
     @staticmethod
@@ -18,3 +19,4 @@ class logger():
             logger.__added_empty_line = True
         logging.info(msg)
         print(msg)
+
