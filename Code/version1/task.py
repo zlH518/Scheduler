@@ -7,6 +7,10 @@ class Task:
         self.cards = cards
         self.gpu_time = gpu_time
         self.duration_time = duration
+
+        #real_parameter
+        self.real_start_time = None
+        self.real_end_time = None
         self.queue_time = None
 
     @classmethod
