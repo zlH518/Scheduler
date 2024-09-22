@@ -11,6 +11,7 @@ log_format = "%(asctime)s - %(levelname)s - %(message)s"
 step = 10
 node_num = 400
 cards_per_node = 8
+recode_num = 5
 
 #FCFS
 FCFS_config = {}

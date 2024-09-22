@@ -57,20 +57,15 @@ class FCFS(BaseAlgorithm):
             else:
                 return None
 
-        flag, index = self.getEmptyNode(task.cards)
-        if flag is None:
+        node = getEmptyNode(task.cards)
+        if node is None:
             return False
-        if flag == 1:
-            node = self.usedNodes[index]
-            del self.usedNodes[index]
         else:
-            node = self.emptyNodes[index]
-            del self.emptyNodes[index]
-        task.flagTime = currentTime
-        node.remainCards -= task.cards
-        node.tasks.append(task)
-        self.usedNodes.append(node)
-        return True
+            task.real_start_time = current_time
+            task.queue_time = current_time - task.create_time
+            node.remainCards -= task.cards
+            node.tasks.append(task)
+            return True
 
     def popTask(self, current_time):
         for index, node in enumerate(self.nodes):
@@ -81,12 +76,12 @@ class FCFS(BaseAlgorithm):
                     task.real_end_time = current_time
                     self.completed_tasks.append(task)
 
-
     def run(self, tasks: list):
         start_time = min(tasks, key=lambda x: x.create_time)
         current_time = start_time
         index = 0
         wl = []
+        recode_num = 0
         while len(self.completed_tasks) != len(list(tasks)):
             self.popTask(current_time)
             while tasks[index].create_time <= current_time:
@@ -94,6 +89,16 @@ class FCFS(BaseAlgorithm):
                 index += 1
             for task in wl:
                 status = self.addTask(current_time, task)
+                if status:      #找到节点并放置
+                    pass
+                else:           #找不到可用的节点
+                    continue
+            current_time += config.step
+            recode_num += 1
+            if recode_num%config.recode_num == 0:
+                self.time
+
+
 
 
 class Buddy(BaseAlgorithm):
