@@ -19,6 +19,8 @@ analysis_path = 'C:\\Users\\Administrator\\Desktop\\IdsLab\\任务\\SchedulerSys
 
 #FCFS
 
-
 #Buddy
+group_num = 5
+cards_per_group = [1, 2, 4, 6, 8]
+theta_per_group = [0.5, 0.5, 0.5, 0.5, 0.5]
 

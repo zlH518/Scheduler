@@ -17,20 +17,20 @@ NF: Next Fit, 循环适应算法
 # algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
 algorithms = [FCFS]
 tasks = dataPrepare.read_and_createTasks(config.file_path)
-analysis.plot_histograms(tasks)
-# for algorithm in algorithms:
-#     '''
-#     algorithm return:
-#         每个step统计的任务平均完成时间(act)
-#         每个step统计的空闲卡的数量
-#         每个step中，统计调度前后，wl中任务卡数的变化
-#         每个step统计的任务的平均等待时间
-#     '''
-#     logger.log(str(algorithm) + 'is start!')
-#     algorithm().run(tasks)
+# analysis.plot_histograms(tasks)
+for algorithm in algorithms:
+    '''
+    algorithm return:
+        每个step统计的任务平均完成时间(act)
+        每个step统计的空闲卡的数量
+        每个step中，统计调度前后，wl中任务卡数的变化
+        每个step统计的任务的平均等待时间
+    '''
+    logger.log(str(algorithm) + 'is start!')
+    algorithm().run(tasks)
 
 
-# for algorithm in algorithms:
-#     tool.plot_data(algorithm().algorithm_name)
+for algorithm in algorithms:
+    tool.plot_data(algorithm().algorithm_name)
 
 

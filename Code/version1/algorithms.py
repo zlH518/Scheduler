@@ -4,6 +4,7 @@ import config
 from node import BaseNode
 from log import logger
 import json
+from group import Group, Package
 
 
 class BaseAlgorithm:
@@ -38,7 +39,7 @@ class BaseAlgorithm:
             'average_queue_time': self.average_queue_time
         }
         json_data = json.dumps(data, indent=4)
-        with open(os.path.join(config.experiment_data_path,f"{self.algorithm_name}_data.json"), 'w') as file:
+        with open(os.path.join(config.experiment_data_path, f"{self.algorithm_name}_data.json"), 'w') as file:
             file.write(json_data)
         logger.log(f"Data has been recorded for {self.algorithm_name}")
 
@@ -102,34 +103,128 @@ class FCFS(BaseAlgorithm):
                 wl_temp = wl
             for index2, task in enumerate(wl):
                 status = self.addTask(current_time, task)
-                if status:      #找到节点并放置
+                if status:  # 找到节点并放置
                     del wl[index2]
-                else:           #找不到可用的节点
+                else:  # 找不到可用的节点
                     continue
             current_time += config.step
             if recode_num % config.recode_num == 0:
                 # logger.log(f'{current_time} already recoded!')
                 self.time.append(current_time)
-                self.average_completion_time.append(sum(task.queue_time+task.duration_time for task in self.completed_tasks) / len(self.completed_tasks) if len(self.completed_tasks) != 0 else 0)
+                self.average_completion_time.append(
+                    sum(task.queue_time + task.duration_time for task in self.completed_tasks) / len(
+                        self.completed_tasks) if len(self.completed_tasks) != 0 else 0)
                 self.number_of_free_cards.append(sum(node.remainCards for node in self.nodes))
-                self.scheduling_efficiency.append(float((sum(task.cards for task in wl_temp) - sum(task.cards for task in wl)) / sum(task.cards for task in wl_temp)) if len(wl_temp) != 0 else 0.0)
-                self.average_queue_time.append(sum(task.queue_time for task in self.completed_tasks) / len(self.completed_tasks) if len(self.completed_tasks) != 0 else 0)
+                self.scheduling_efficiency.append(float(
+                    (sum(task.cards for task in wl_temp) - sum(task.cards for task in wl)) / sum(
+                        task.cards for task in wl_temp)) if len(wl_temp) != 0 else 0.0)
+                self.average_queue_time.append(
+                    sum(task.queue_time for task in self.completed_tasks) / len(self.completed_tasks) if len(
+                        self.completed_tasks) != 0 else 0)
         self.recoder()
 
 
 class Buddy(BaseAlgorithm):
+
     def __init__(self):
         super().__init__()
         self.algorithm_name = 'Buddy'
+        self.groups = self.groupsInit()
+
+    def groupsInit(self):
+        G = []
+        avgNum = len(self.nodes) // config.group_num
+        for i in range(config.group_num):
+            G.append(Group(cards_per_package=config.cards_per_group[i], theta=config.theta_per_group[i]))
+        # 给每个group初始化Package
+        for i in range(config.group_num):
+            start_index = i * avgNum
+            end_index = (i + 1) * avgNum if i < config.group_num - 1 else len(self.nodes)
+            for node in self.nodes[start_index:end_index]:
+                unused_cards = node.cards
+                while unused_cards >= config.cards_per_group[i]:
+                    G[i].package.append(Package(config.cards_per_group[i], node.nodeId))
+                    unused_cards -= config.cards_per_group[i]
+                if unused_cards == 2:
+                    G[1].package.append(Package(config.cards_per_group[1], node.nodeId))
+        return G
 
     def addTask(self, current_time, task):
-        print('ok')
+
+        def getGroup(need: int):
+            index = int(need/2)
+            group_possible = self.groups[index]
+            while group_possible.getEmptyPackage() is None:
+                index = index + 1
+                if index >= config.group_num:
+                    return None
+            return group_possible
+
+        group = getGroup(task.cards)
+        if group is None:
+            return False
+        else:
+            available_package_index = group.getEmptyPackage()
+            task.real_start_time = current_time
+            task.queue_time = current_time - task.create_time
+            #找到资源了，接下来要对package查看是否需要拆分
+            #1.不需要拆分，则直接补充信息记录信息
+            if group.package[available_package_index].cards == task.cards:
+                group.package[available_package_index].task.append(task)
+            #2.这个Package太大了，需要对这个Package进行拆分
+            else:
+                package = group.package[available_package_index]
+                del group.package[available_package_index]
 
     def popTask(self, current_time):
         print('ok')
 
     def run(self, tasks: list):
-        print('ok')
+        start_time = tasks[0].create_time
+        current_time = start_time
+        logger.log(f'start_time:{start_time}')
+        index = 0
+        wl = []
+        recode_num = 0
+        while len(self.completed_tasks) != len(list(tasks)):
+            logger.log(f"{len(self.completed_tasks)}/{len(list(tasks))}")
+            self.popTask(current_time)
+            number_of_new_task = 0
+            if index < len(tasks):
+                while tasks[index].create_time <= current_time:
+                    wl.append(tasks[index])
+                    number_of_new_task += 1
+                    index += 1
+                    if index == len(tasks):
+                        break
+            if len(wl) == 0:
+                current_time += config.step
+                continue
+            # logger.log(f'number of new task is {number_of_new_task}')
+            recode_num += 1
+            if recode_num % config.recode_num == 0:
+                wl_temp = wl
+            for index2, task in enumerate(wl):
+                status = self.addTask(current_time, task)
+                if status:  # 找到节点并放置
+                    del wl[index2]
+                else:  # 找不到可用的节点
+                    continue
+            current_time += config.step
+            if recode_num % config.recode_num == 0:
+                # logger.log(f'{current_time} already recoded!')
+                self.time.append(current_time)
+                self.average_completion_time.append(
+                    sum(task.queue_time + task.duration_time for task in self.completed_tasks) / len(
+                        self.completed_tasks) if len(self.completed_tasks) != 0 else 0)
+                self.number_of_free_cards.append(sum(node.remainCards for node in self.nodes))
+                self.scheduling_efficiency.append(float(
+                    (sum(task.cards for task in wl_temp) - sum(task.cards for task in wl)) / sum(
+                        task.cards for task in wl_temp)) if len(wl_temp) != 0 else 0.0)
+                self.average_queue_time.append(
+                    sum(task.queue_time for task in self.completed_tasks) / len(self.completed_tasks) if len(
+                        self.completed_tasks) != 0 else 0)
+        self.recoder()
 
 
 class SJF(BaseAlgorithm):

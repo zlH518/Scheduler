@@ -7,6 +7,8 @@ class BaseNode:
         self.cards = cards_per_node             #每个node的cards数量
         self.tasks = []                         #存储当前节点中正在处理的任务
         self.remainCards = cards_per_node       #存储当前节点中剩余的卡
+        self.nodeId = BaseNode.NODEID
+        BaseNode.NODEID += 1
 
 
     def __repr__(self):
