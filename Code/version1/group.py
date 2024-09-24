@@ -22,7 +22,7 @@ class Group:
 
     def getEmptyPackage(self):
         if next((p for p in self.package if len(p.task) == 0), None) is not None:
-            index = next((index for index, p in enumerate(self.package) if len(p.task)), None)
+            index = next((index for index, p in enumerate(self.package) if len(p.task) == 0), None)
             return index
         else:
             return None
