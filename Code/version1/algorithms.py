@@ -185,7 +185,7 @@ class Buddy(BaseAlgorithm):
                     temp = Package(cards_per_package=self.groups[int(unpackagedcards/2)].cards_per_package,node_index=package.nodeId)
                     self.groups[int(unpackagedcards/2)].package.append(temp)
                     unpackagedcards -= self.groups[int(unpackagedcards/2)].cards_per_package
-                return True
+            return True
 
     def popTask(self, current_time):
         #对每个group的ackage中的任务进行检查，时间到了就释放任务，然后对nodeId相同的package进行汇聚转移
@@ -194,7 +194,7 @@ class Buddy(BaseAlgorithm):
                 if len(package.task) == 0:
                     continue
                 if current_time - package.task[0].real_start_time >= package.task[0].duration_time:
-                    task = package.task
+                    task = package.task[0]
                     package.task = []
                     task.real_end_time = current_time
                     self.completed_tasks.append(task)
@@ -235,12 +235,14 @@ class Buddy(BaseAlgorithm):
         wl = []
         recode_num = 0
         while len(self.completed_tasks) != len(list(tasks)):
-            logger.log(f"{len(self.completed_tasks)}/{len(list(tasks))}")
+            # if len(self.completed_tasks) == 18:
+            #     input()
+            logger.log(f"{current_time}: {len(self.completed_tasks)}/{len(list(tasks))}")
             self.popTask(current_time)
             number_of_new_task = 0
             if index < len(tasks):
                 while tasks[index].create_time <= current_time:
-                    wl.insert(0,tasks[index])
+                    wl.insert(0, tasks[index])
                     number_of_new_task += 1
                     index += 1
                     if index == len(tasks):
@@ -252,8 +254,8 @@ class Buddy(BaseAlgorithm):
             recode_num += 1
             if recode_num % config.recode_num == 0:
                 wl_temp = wl
-            for index2, task in enumerate(wl[::-1]):
-                status = self.addTask(current_time, task)
+            for index2 in range(len(wl) - 1, -1, -1):
+                status = self.addTask(current_time, wl[index2])
                 if status:  # 找到节点并放置
                     del wl[index2]
                 else:  # 找不到可用的节点
