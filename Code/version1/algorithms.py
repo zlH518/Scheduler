@@ -5,6 +5,7 @@ from node import BaseNode
 from log import logger
 import json
 from group import Group, Package
+import copy
 
 
 class BaseAlgorithm:
@@ -69,7 +70,7 @@ class FCFS(BaseAlgorithm):
 
     def popTask(self, current_time):
         for index, node in enumerate(self.nodes):
-            for index2, task in enumerate(node.tasks[::-1]):
+            for index2, task in enumerate(node.tasks):
                 if current_time - task.real_start_time >= task.duration_time:
                     node.remainCards += task.cards
                     del node.tasks[index2]
@@ -78,13 +79,16 @@ class FCFS(BaseAlgorithm):
 
     def run(self, tasks: list):
         start_time = tasks[0].create_time
+        self.up_time = start_time
         current_time = start_time
         logger.log(f'start_time:{start_time}')
         index = 0
         wl = []
         recode_num = 0
         while len(self.completed_tasks) != len(list(tasks)):
-            logger.log(f"{len(self.completed_tasks)}/{len(list(tasks))}")
+            # if len(self.completed_tasks) == 30:
+            #     input()
+            logger.log(f"{current_time}: {len(self.completed_tasks)}/{len(list(tasks))}")
             self.popTask(current_time)
             number_of_new_task = 0
             if index < len(tasks):
@@ -100,9 +104,9 @@ class FCFS(BaseAlgorithm):
             # logger.log(f'number of new task is {number_of_new_task}')
             recode_num += 1
             if recode_num % config.recode_num == 0:
-                wl_temp = wl
-            for index2, task in enumerate(wl[::-1]):
-                status = self.addTask(current_time, task)
+                wl_temp = copy.deepcopy(wl)
+            for index2 in range(len(wl) - 1, -1, -1):
+                status = self.addTask(current_time, wl[index2])
                 if status:  # 找到节点并放置
                     del wl[index2]
                 else:  # 找不到可用的节点
@@ -159,9 +163,12 @@ class Buddy(BaseAlgorithm):
                 index = index + 1
                 if index >= config.group_num:
                     return None
+                group_possible = self.groups[index]
             return group_possible
 
         group = getGroup(task.cards)
+        # if current_time == 712:
+        #     input()
         if group is None:
             return False
         else:
@@ -178,7 +185,8 @@ class Buddy(BaseAlgorithm):
                 unpackagedcards = package.cards
                 del group.package[available_package_index]
                 new_package = Package(cards_per_package=task.cards, node_index=package.nodeId)
-                new_package.task = task
+                new_package.task = [task]
+                group = self.groups[int(task.cards/2)]
                 group.package.append(new_package)
                 unpackagedcards -= task.cards
                 while unpackagedcards != 0:
@@ -190,7 +198,9 @@ class Buddy(BaseAlgorithm):
     def popTask(self, current_time):
         #对每个group的ackage中的任务进行检查，时间到了就释放任务，然后对nodeId相同的package进行汇聚转移
         for group in self.groups:
+            flag = True
             for package in group.package:
+                flag = False
                 if len(package.task) == 0:
                     continue
                 if current_time - package.task[0].real_start_time >= package.task[0].duration_time:
@@ -198,13 +208,10 @@ class Buddy(BaseAlgorithm):
                     package.task = []
                     task.real_end_time = current_time
                     self.completed_tasks.append(task)
-
-            #只有当前组中空闲率太大并且时间到了汇聚的时间周期才会汇聚
-            empty_rate = 1.0 - sum(len(package.task) for package in group.package) / len(group.package)
-            if empty_rate > group.theta and self.up_time - current_time >= config.up_time:
-                self.up_time = current_time
+                    flag = True
+            if flag:
                 empty_package_by_nodeId = {}
-                for index, package in enumerate(group.package[::-1]):
+                for index, package in enumerate(group.package):
                     if len(package.task) == 0:
                         if package.nodeId not in empty_package_by_nodeId:
                             empty_package_by_nodeId[package.nodeId] = []
@@ -237,12 +244,16 @@ class Buddy(BaseAlgorithm):
         while len(self.completed_tasks) != len(list(tasks)):
             # if len(self.completed_tasks) == 18:
             #     input()
+            if current_time == 1012:
+                input()
             logger.log(f"{current_time}: {len(self.completed_tasks)}/{len(list(tasks))}")
             self.popTask(current_time)
             number_of_new_task = 0
             if index < len(tasks):
                 while tasks[index].create_time <= current_time:
                     wl.insert(0, tasks[index])
+                    # if index == 8:
+                    #     input()
                     number_of_new_task += 1
                     index += 1
                     if index == len(tasks):
@@ -252,8 +263,8 @@ class Buddy(BaseAlgorithm):
                 continue
             # logger.log(f'number of new task is {number_of_new_task}')
             recode_num += 1
-            if recode_num % config.recode_num == 0:
-                wl_temp = wl
+            if recode_num % config.recode_num == 0:     #TODO用深拷贝
+                wl_temp = copy.deepcopy(wl)
             for index2 in range(len(wl) - 1, -1, -1):
                 status = self.addTask(current_time, wl[index2])
                 if status:  # 找到节点并放置
