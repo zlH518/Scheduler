@@ -157,7 +157,7 @@ class Buddy(BaseAlgorithm):
     def addTask(self, current_time, task):
 
         def getGroup(need: int):
-            index = int(need/2)
+            index = int(need / 2)
             group_possible = self.groups[index]
             while group_possible.getEmptyPackage() is None:
                 index = index + 1
@@ -175,32 +175,32 @@ class Buddy(BaseAlgorithm):
             available_package_index = group.getEmptyPackage()
             task.real_start_time = current_time
             task.queue_time = current_time - task.create_time
-            #找到资源了，接下来要对package查看是否需要拆分
-            #1.不需要拆分，则直接补充信息记录信息
+            # 找到资源了，接下来要对package查看是否需要拆分
+            # 1.不需要拆分，则直接补充信息记录信息
             if group.package[available_package_index].cards == task.cards:
                 group.package[available_package_index].task.append(task)
-            #2.这个Package太大了，需要对这个Package进行拆分
+            # 2.这个Package太大了，需要对这个Package进行拆分
             else:
                 package = group.package[available_package_index]
                 unpackagedcards = package.cards
                 del group.package[available_package_index]
                 new_package = Package(cards_per_package=task.cards, node_index=package.nodeId)
                 new_package.task = [task]
-                group = self.groups[int(task.cards/2)]
+                group = self.groups[int(task.cards / 2)]
                 group.package.append(new_package)
                 unpackagedcards -= task.cards
                 while unpackagedcards != 0:
-                    temp = Package(cards_per_package=self.groups[int(unpackagedcards/2)].cards_per_package,node_index=package.nodeId)
-                    self.groups[int(unpackagedcards/2)].package.append(temp)
-                    unpackagedcards -= self.groups[int(unpackagedcards/2)].cards_per_package
+                    temp = Package(cards_per_package=self.groups[int(unpackagedcards / 2)].cards_per_package,
+                                   node_index=package.nodeId)
+                    self.groups[int(unpackagedcards / 2)].package.append(temp)
+                    unpackagedcards -= self.groups[int(unpackagedcards / 2)].cards_per_package
             return True
 
     def popTask(self, current_time):
-        #对每个group的ackage中的任务进行检查，时间到了就释放任务，然后对nodeId相同的package进行汇聚转移
+        # 对每个group的ackage中的任务进行检查，时间到了就释放任务，然后对nodeId相同的package进行汇聚转移
         for group in self.groups:
-            flag = True
+            flag = False
             for package in group.package:
-                flag = False
                 if len(package.task) == 0:
                     continue
                 if current_time - package.task[0].real_start_time >= package.task[0].duration_time:
@@ -211,27 +211,25 @@ class Buddy(BaseAlgorithm):
                     flag = True
             if flag:
                 empty_package_by_nodeId = {}
-                for index, package in enumerate(group.package):
-                    if len(package.task) == 0:
-                        if package.nodeId not in empty_package_by_nodeId:
-                            empty_package_by_nodeId[package.nodeId] = []
-                        empty_package_by_nodeId[package.nodeId].append(package)
-                        del group.package[index]
+                for index2 in range(len(group.package) - 1, -1, -1):
+                    if len(group.package[index2].task) == 0:
+                        if group.package[index2].nodeId not in empty_package_by_nodeId:
+                            empty_package_by_nodeId[group.package[index2].nodeId] = []
+                        empty_package_by_nodeId[group.package[index2].nodeId].append(group.package[index2])
+                        del group.package[index2]
 
                 for node_id, item in empty_package_by_nodeId.items():
-                    while True:
-                        all_cards = sum(package.cards for package in item)
+                    all_cards = sum(package.cards for package in item)
+                    while all_cards != 0:
                         position_index = None
                         for index in range(len(config.cards_per_group) - 1, -1, -1):
-                            if config.cards_per_group[index] >= all_cards:
+                            if config.cards_per_group[index] <= all_cards:
                                 position_index = index
                                 break
-                        new_package = Package(cards_per_package=config.cards_per_group[position_index], node_index=node_id)
-                        self.groups[int(config.cards_per_group[position_index])].package.append(new_package)
+                        new_package = Package(cards_per_package=config.cards_per_group[position_index],
+                                              node_index=node_id)
+                        self.groups[position_index].package.append(new_package)
                         all_cards -= new_package.cards
-                        if all_cards == 0:
-                            break
-
 
     def run(self, tasks: list):
         start_time = tasks[0].create_time
@@ -244,8 +242,8 @@ class Buddy(BaseAlgorithm):
         while len(self.completed_tasks) != len(list(tasks)):
             # if len(self.completed_tasks) == 18:
             #     input()
-            if current_time == 1012:
-                input()
+            # if current_time == 1012:
+            #     input()
             logger.log(f"{current_time}: {len(self.completed_tasks)}/{len(list(tasks))}")
             self.popTask(current_time)
             number_of_new_task = 0
@@ -263,7 +261,7 @@ class Buddy(BaseAlgorithm):
                 continue
             # logger.log(f'number of new task is {number_of_new_task}')
             recode_num += 1
-            if recode_num % config.recode_num == 0:     #TODO用深拷贝
+            if recode_num % config.recode_num == 0:  # TODO用深拷贝
                 wl_temp = copy.deepcopy(wl)
             for index2 in range(len(wl) - 1, -1, -1):
                 status = self.addTask(current_time, wl[index2])
