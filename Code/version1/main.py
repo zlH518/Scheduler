@@ -9,7 +9,7 @@ import analysis
 '''
 FCFS: First Come First Sever, 先到先服务算法
 Buddy:我的算法
-SJF:Short Job First, 短作业优先算法
+SJF:Short Job First, 短作业优先算法,这里任务太多，如果等待所有任务到来再做短任务优先的话非常不合适，因此打算阶段性短作业优先
 BF: Best Fit, 最优适应算法
 WF: Worst Fit, 最差适应算法
 NF: Next Fit, 循环适应算法 
