@@ -13,6 +13,7 @@ SJF:Short Job First, 短作业优先算法,这里任务太多，如果等待所�
 BF: Best Fit, 最优适应算法
 WF: Worst Fit, 最差适应算法
 NF: Next Fit, 循环适应算法 
+
 '''
 # algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
 algorithms = [FCFS,Buddy, SJF, BF, WF, NF]
