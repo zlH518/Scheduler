@@ -16,7 +16,7 @@ NF: Next Fit, 循环适应算法
 
 '''
 # algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
-algorithms = [FCFS,Buddy, SJF, BF, WF, NF]
+algorithms = [FCFS,Buddy]
 tasks = dataPrepare.read_and_createTasks(config.file_path)
 # analysis.plot_histograms(tasks)
 for algorithm in algorithms:
