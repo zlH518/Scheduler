@@ -79,7 +79,7 @@ class FCFS(BaseAlgorithm):
 
     def run(self, tasks: list):
         start_time = tasks[0].create_time
-        self.up_time = start_time
+        self.up_time = 0
         current_time = start_time
         logger.log(f'start_time:{start_time}')
         index = 0
@@ -90,6 +90,7 @@ class FCFS(BaseAlgorithm):
             #     input()
             logger.log(f"{current_time}: {len(self.completed_tasks)}/{len(list(tasks))}")
             self.popTask(current_time)
+            self.up_time += 1
             number_of_new_task = 0
             if index < len(tasks):
                 while tasks[index].create_time <= current_time:
@@ -196,6 +197,30 @@ class Buddy(BaseAlgorithm):
                     unpackagedcards -= self.groups[int(unpackagedcards / 2)].cards_per_package
             return True
 
+    def up_pieces(self):
+        for group in self.groups:
+            empty_package_by_nodeId = {}
+            for index2 in range(len(group.package) - 1, -1, -1):
+                if len(group.package[index2].task) == 0:
+                    if group.package[index2].nodeId not in empty_package_by_nodeId:
+                        empty_package_by_nodeId[group.package[index2].nodeId] = []
+                    empty_package_by_nodeId[group.package[index2].nodeId].append(group.package[index2])
+                    del group.package[index2]
+
+            for node_id, item in empty_package_by_nodeId.items():
+                all_cards = sum(package.cards for package in item)
+                while all_cards != 0:
+                    position_index = None
+                    for index in range(len(config.cards_per_group) - 1, -1, -1):
+                        if config.cards_per_group[index] <= all_cards:
+                            position_index = index
+                            break
+                    new_package = Package(cards_per_package=config.cards_per_group[position_index],
+                                          node_index=node_id)
+                    self.groups[position_index].package.append(new_package)
+                    all_cards -= new_package.cards
+
+
     def popTask(self, current_time):
         # 对每个group的ackage中的任务进行检查，时间到了就释放任务，然后对nodeId相同的package进行汇聚转移
         for group in self.groups:
@@ -233,7 +258,7 @@ class Buddy(BaseAlgorithm):
 
     def run(self, tasks: list):
         start_time = tasks[0].create_time
-        self.up_time = start_time
+        self.up_time = 0
         current_time = start_time
         logger.log(f'start_time:{start_time}')
         index = 0
@@ -246,6 +271,10 @@ class Buddy(BaseAlgorithm):
             #     input()
             logger.log(f"{current_time}: {len(self.completed_tasks)}/{len(list(tasks))}")
             self.popTask(current_time)
+            self.up_time += 1
+            if self.up_time >= config.up_time:
+                self.up_time = 0
+                self.up_pieces()
             number_of_new_task = 0
             if index < len(tasks):
                 while tasks[index].create_time <= current_time:
@@ -276,7 +305,7 @@ class Buddy(BaseAlgorithm):
                 self.average_completion_time.append(
                     sum(task.queue_time + task.duration_time for task in self.completed_tasks) / len(
                         self.completed_tasks) if len(self.completed_tasks) != 0 else 0)
-                self.number_of_free_cards.append(sum(node.remainCards for node in self.nodes))
+                self.number_of_free_cards.append(sum(sum(package.cards if len(package.task) == 0 else 0 for package in group.package) for group in self.groups))
                 self.scheduling_efficiency.append(float(
                     (sum(task.cards for task in wl_temp) - sum(task.cards for task in wl)) / sum(
                         task.cards for task in wl_temp)) if len(wl_temp) != 0 else 0.0)
