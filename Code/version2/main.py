@@ -7,7 +7,7 @@ import tool
 import analysis
 
 '''
-FCFS: First Come First Sever, 先到先服务算法
+FCFS: First Come First Sever, 先到先服务算法，同时用于计算每个任务的等待时间
 Buddy:我的算法
 SJF:Short Job First, 短作业优先算法,这里任务太多，如果等待所有任务到来再做短任务优先的话非常不合适，因此打算阶段性短作业优先
 BF: Best Fit, 最优适应算法
@@ -16,7 +16,7 @@ NF: Next Fit, 循环适应算法
 
 '''
 # algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
-algorithms = [FCFS, Buddy]
+algorithms = [FCFS]
 algorithm_names = []
 tasks = dataPrepare.read_and_createTasks(config.file_path)
 # analysis.plot_histograms(tasks)
