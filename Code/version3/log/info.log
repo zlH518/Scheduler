@@ -546,3 +546,11 @@
 2024-10-09 21:43:08,275 - INFO - the number of task is 1083
 2024-10-09 21:43:08,275 - INFO - start_time:106
 2024-10-09 21:43:18,832 - INFO - Data has been recorded for FCFS
+2024-10-09 21:46:16,266 - INFO - 
+
+2024-10-09 21:46:16,266 - INFO - 2024-10-09 21:46:16.266255
+2024-10-09 21:46:16,266 - INFO - file:./data/mydata1248.csv read success!
+2024-10-09 21:46:16,321 - INFO - all files was read done!
+2024-10-09 21:46:16,321 - INFO - the number of task is 1083
+2024-10-09 21:46:16,322 - INFO - start_time:106
+2024-10-09 21:46:26,760 - INFO - Data has been recorded for FCFS
