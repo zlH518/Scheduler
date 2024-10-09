@@ -1,10 +1,6 @@
-import dataPrepare
-import config
-import time
 from FCFS import FCFS
 from task import Task
 from node import Node
-from log import logger
 import tool
 
 '''
@@ -16,15 +12,21 @@ WF: Worst Fit, 最差适应算法
 NF: Next Fit, 循环适应算法 
 
 '''
-# algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
-algorithms = [FCFS]
-for algorithm in algorithms:
-    Task.reset()                            #创建任务
-    Node.reset()                            #创建节点
-    algorithm()                             #算法初始化
-    algorithm().run()                       #算法运行
-    algorithm().recoder()                   #算法记录结果
-    print(len(Task.Tasks))
 
+
+if __name__ == '__main__':
+    # algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
+    algorithms = [FCFS]
+    algorithm_names = []
+    for algorithm in algorithms:
+        Task.reset()                            #创建任务
+        Node.reset()                            #创建节点
+        algorithm()                             #算法初始化
+        algorithm().run()                       #算法运行
+        # print(len(Task.completed_task_queue_time))
+        algorithm_names.append(algorithm().algorithm_name)
+        # print(len(Task.Tasks))
+
+    tool.plot_data(algorithm_names=algorithm_names)
 
 

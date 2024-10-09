@@ -3,35 +3,188 @@ import json
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.ticker import PercentFormatter
 
+palette = sns.color_palette("Set2")
 
 
 def plot_data(algorithm_names):
     plt.figure(figsize=(10, 6))
-
-    # 读取所有算法的数据
     all_data = []
     for algorithm_name in algorithm_names:
         with open(os.path.join(config.experiment_data_path, f"{algorithm_name}_data.json"), 'r') as file:
             data = json.load(file)
             all_data.append(data)
 
-    # 将所有数据转换为DataFrame
     df = pd.DataFrame(all_data)
 
-    # 遍历每个指标进行绘图
-    for column in ['average_completion_time', 'number_of_free_cards', 'scheduling_efficiency', 'average_queue_time']:
-        plt.figure(figsize=(10, 6))
-        for index, algorithm_name in enumerate(algorithm_names):
-            plt.plot(df['time'][index], df[column][index], linestyle='-', label=algorithm_name)
-        plt.title(f'{column} Over Time')
-        plt.xlabel('Time')
-        plt.ylabel(column)
-        plt.legend()
-        # plt.grid(True)
-        plt.gca().spines['right'].set_visible(False)
-        plt.gca().spines['top'].set_visible(False)
-        plt.savefig(os.path.join(config.experiment_data_path, f"{column}.png"))
-        plt.show()
-        plt.close()
+    #画三个时间
+    line_styles = ['-', '--', ':']  # 实线、虚线、点线
+    plt.figure(figsize=(10, 6))
+    for index, algorithm_name in enumerate(algorithm_names):
+        plt.plot(df['time'][index], df['average_completion_time'][index], linestyle=line_styles[0],
+                 color=palette[index],
+                 label=algorithm_name if index == 0 else "")
+        plt.plot(df['time'][index], df['average_queue_time'][index], linestyle=line_styles[1], color=palette[index],
+                 label="")
+        plt.plot(df['time'][index], df['average_duration_time'][index], linestyle=line_styles[2], color=palette[index],
+                 label="")
+
+    plt.title('Metrics Over Time')
+    plt.xlabel('Time')
+    plt.ylabel('Metrics Over Time')
+
+    # 添加指标线型图例
+    handles = [
+        plt.Line2D([0], [0], color='black', linestyle=line_styles[0], label='Average Completion Time'),
+        plt.Line2D([0], [0], color='black', linestyle=line_styles[1], label='Average Queue Time'),
+        plt.Line2D([0], [0], color='black', linestyle=line_styles[2], label='Average Duration Time')
+    ]
+    line_meaning = plt.legend(handles=handles, loc='upper left', title='meaning of line')
+
+    color_handles = [plt.Line2D([0], [0], color=palette[i], label=algorithm_names[i]) for i in
+                     range(len(algorithm_names))]
+    plt.legend(handles=color_handles, loc='upper right', title='Algorithms', bbox_to_anchor=(0, -0.3))
+
+    plt.gca().add_artist(line_meaning)
+    # plt.gca().add_artist(color_meaning)
+
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['top'].set_visible(False)
+    plt.savefig(os.path.join(config.experiment_data_path, "Metrics.png"))
+    plt.show()
+    plt.close()
+
+    #画free_cards
+    plt.figure(figsize=(10, 6))
+    for index, algorithm_name in enumerate(algorithm_names):
+        plt.plot(df['time'][index], df['number_of_free_cards'][index], linestyle=line_styles[0],
+                 color=palette[index],
+                 label=algorithm_name if index == 0 else "")
+
+    plt.title('Number of Free Cards')
+    plt.xlabel('Time')
+    plt.ylabel('number of free cards')
+
+    plt.legend(loc='upper right')
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['top'].set_visible(False)
+    plt.savefig(os.path.join(config.experiment_data_path, "Free Cards.png"))
+    plt.show()
+    plt.close()
+
+
+    #画利用率
+    plt.figure(figsize=(10, 6))
+    for index, algorithm_name in enumerate(algorithm_names):
+        plt.plot(df['time'][index], df['scheduling_efficiency'][index], linestyle=line_styles[0],
+                 color=palette[index],
+                 label=algorithm_name if index == 0 else "")
+
+    plt.title('Scheduling Efficiency')
+    plt.xlabel('Time')
+    plt.ylabel('Precent')
+    plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
+
+    plt.legend(loc='upper right')
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['top'].set_visible(False)
+    plt.savefig(os.path.join(config.experiment_data_path, "Scheduling Efficiency.png"))
+    plt.show()
+    plt.close()
+#
+
+
+# import matplotlib.pyplot as plt
+# import pandas as pd
+# import os
+# import json
+#
+#
+# def plot_data(algorithm_names):
+#     plt.figure(figsize=(10, 6))
+#
+#     # 读取所有算法的数据
+#     all_data = []
+#     for algorithm_name in algorithm_names:
+#         with open(os.path.join(config.experiment_data_path, f"{algorithm_name}_data.json"), 'r') as file:
+#             data = json.load(file)
+#             all_data.append(data)
+#
+#     # 将所有数据转换为DataFrame
+#     df = pd.DataFrame(all_data)
+#
+#     # 设置线型和颜色
+#     line_styles = ['-', '--', ':']  # 实线、虚线、点线
+#     color = 'blue'  # 统一颜色
+#
+#     # 绘制 average_completion_time, average_queue_time 和 average_duration_time
+#     plt.figure(figsize=(10, 6))
+#     for index, algorithm_name in enumerate(algorithm_names):
+#         plt.plot(df['time'][index], df['average_completion_time'][index], linestyle=line_styles[0], color=color,
+#                  label=algorithm_name if index == 0 else "")
+#         plt.plot(df['time'][index], df['average_queue_time'][index], linestyle=line_styles[1], color=color, label="")
+#         plt.plot(df['time'][index], df['average_duration_time'][index], linestyle=line_styles[2], color=color, label="")
+#
+#     plt.title('Metrics Over Time')
+#     plt.xlabel('Time')
+#     plt.ylabel('Metrics')
+#     plt.legend(algorithm_names)
+#     plt.gca().spines['right'].set_visible(False)
+#     plt.gca().spines['top'].set_visible(False)
+#     plt.savefig(os.path.join(config.experiment_data_path, 'metrics_over_time.png'))
+#     plt.show()
+#     plt.close()
+
+
+# import matplotlib.pyplot as plt
+# import pandas as pd
+# import os
+# import json
+#
+#
+# def plot_data(algorithm_names):
+#     plt.figure(figsize=(10, 6))
+#
+#     # 读取所有算法的数据
+#     all_data = []
+#     for algorithm_name in algorithm_names:
+#         with open(os.path.join(config.experiment_data_path, f"{algorithm_name}_data.json"), 'r') as file:
+#             data = json.load(file)
+#             all_data.append(data)
+#
+#     # 将所有数据转换为DataFrame
+#     df = pd.DataFrame(all_data)
+#
+#     # 设置线型和颜色
+#     line_styles = ['-', '--', ':']  # 实线、虚线、点线
+#     color = 'blue'  # 统一颜色
+#
+#     # 绘制 average_completion_time, average_queue_time 和 average_duration_time
+#     plt.figure(figsize=(10, 6))
+#     for index, algorithm_name in enumerate(algorithm_names):
+#         plt.plot(df['time'][index], df['average_completion_time'][index], linestyle=line_styles[0], color=color,
+#                  label=algorithm_name if index == 0 else "")
+#         plt.plot(df['time'][index], df['average_queue_time'][index], linestyle=line_styles[1], color=color, label="")
+#         plt.plot(df['time'][index], df['average_duration_time'][index], linestyle=line_styles[2], color=color, label="")
+#
+#     # 添加图例，区分不同线型
+#     plt.title('Metrics Over Time')
+#     plt.xlabel('Time')
+#     plt.ylabel('Metrics')
+#
+#     # 创建自定义图例
+#     handles = [plt.Line2D([0], [0], color=color, linestyle=line_styles[0], label='Average Completion Time'),
+#                plt.Line2D([0], [0], color=color, linestyle=line_styles[1], label='Average Queue Time'),
+#                plt.Line2D([0], [0], color=color, linestyle=line_styles[2], label='Average Duration Time')]
+#     plt.legend(handles=handles + [plt.Line2D([0], [0], color='white', label='')] + [
+#         plt.Line2D([0], [0], color='white', label=algorithm_name) for algorithm_name in algorithm_names])
+#
+#     plt.gca().spines['right'].set_visible(False)
+#     plt.gca().spines['top'].set_visible(False)
+#     plt.savefig(os.path.join(config.experiment_data_path, 'metrics_over_time.png'))
+#     plt.show()
+#     plt.close()
+
 

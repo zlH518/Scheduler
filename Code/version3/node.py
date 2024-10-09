@@ -10,7 +10,7 @@ class Node:
         self.node_id = Node.NodeId  # 唯一标识NodeID
         self.cards = cards_per_node  # 每个node的cards数量
         self.tasks = []  # 存储当前节点中正在处理的任务
-        self.emptyCards = cards_per_node  # 存储当前节点中剩余的卡
+        self.empty_cards = cards_per_node  # 存储当前节点中剩余的卡
         Node.Nodes.append(self)
         Node.NodeId += 1
 
@@ -23,7 +23,7 @@ class Node:
         return False
 
     def __bool__(self):
-        return self.emptyCards != 0
+        return self.empty_cards != 0
 
     def __repr__(self):
         return f"Node(node_id={self.node_id}, cards={self.cards})"

@@ -1,5 +1,4 @@
 import glob
-
 import pandas as pd
 from log import logger
 import config
@@ -23,19 +22,15 @@ class Task:
 
         # real_parameter
         self.real_start_time = None
-        self.real_end_time = None
-        # self.queue_time = None
 
         Task.Tasks.append(self)
         Task.Tasks = sorted(Task.Tasks, key=lambda task: task.create_time)
-
         Task.TaskId += 1
 
     def __repr__(self):
         return (f"Task(task_id={self.task_id}, create_time={self.create_time}, "
                 f"start_time={self.start_time}, cards={self.cards}, "
-                f"duration_time={self.duration_time}, gpu_time={self.gpu_time}, "
-                f"queue_time={self.queue_time})\n")
+                f"duration_time={self.duration_time}, gpu_time={self.gpu_time}\n")
 
     @property
     def queue_time(self):
@@ -65,8 +60,7 @@ class Task:
         file_name = glob.glob(config.file_path)
         for file in file_name:
             try:
-                data = pd.read_csv(file, usecols=['create_time', 'start_time', 'cards', 'gpu_time',
-                                                  'duration_time', 'migration_cost'])
+                data = pd.read_csv(file, usecols=['create_time', 'start_time', 'cards', 'gpu_time', 'duration_time', 'migration_cost'])
                 logger.log(msg=str(f"file:{file} read success!"))
                 for row in data.itertuples():
                     Task(create_time=row.create_time, start_time=row.start_time,
@@ -101,3 +95,6 @@ if __name__ == '__main__':
     print(Task.completed_task_queue_time)
     print(Task.average_queue_time)
     print(Task.TaskId)
+
+    for task in Task.Tasks:
+        print(task)
