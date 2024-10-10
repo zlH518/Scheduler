@@ -106,6 +106,8 @@ class FCFS_With_migrate:
         best_node = None
         for node in self.nodes:
             valid_combination = find_movement_combinations(node.node_id, target)
+            if valid_combination is None:
+                continue
             if best_combination is None:
                 best_node = node
                 best_combination = valid_combination
