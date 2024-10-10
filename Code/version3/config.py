@@ -21,4 +21,5 @@ experiment_data_path = './experiment'
 analysis_path = './experiment/analysis'
 
 
-#FCFS
+#FCFS_with_migrate
+new_data_file_path = './data/data_afterFCFS1248.xlsx'

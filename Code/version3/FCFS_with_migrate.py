@@ -91,12 +91,15 @@ class FCFS_With_migrate:
                     del wl[index2]
                 else:  # 找不到可用的节点
                     continue
+
+            pass
+            if len(wl) == 0:        #迁移没有收益
+                current_time += config.step
+            else:                   #迁移可能有收益
+
+
+
             current_time += config.step
-
-            pass
-            #这里对任务进行迁移
-            pass
-
             if recode_num % config.recode_num == 0:
                 # logger.log(f'{current_time} already recoded!')
                 self.time.append(current_time)

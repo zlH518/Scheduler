@@ -6,6 +6,7 @@ from log import logger
 import json
 import copy
 from task import Task
+import pandas as pd
 
 class FCFS:
     def __init__(self):
@@ -34,6 +35,23 @@ class FCFS:
         with open(os.path.join(config.experiment_data_path, f"{self.algorithm_name}_data.json"), 'w') as file:
             file.write(json_data)
         logger.log(f"Data has been recorded for {self.algorithm_name}")
+
+
+    def save_new_data(self):
+        tasks_data = [
+            {
+                'create_time': task.create_time,
+                'start_time': task.start_time,
+                'cards': task.cards,
+                'gpu_time': task.gpu_time,
+                'duration_time': task.duration_time,
+                'migration_cost': task.migration_cost,
+                'pre_queue_time': task.queue_time
+            }
+            for task in Task.Tasks
+        ]
+        df = pd.DataFrame(tasks_data)
+        df.to_csv('./data/data_afterFCFS1248.xlsx', index=False)
 
 
     def addTask(self, current_time, task):
@@ -127,6 +145,7 @@ class FCFS:
             sum(task.queue_time for task in self.completed_tasks) / len(self.completed_tasks) if len(
                 self.completed_tasks) != 0 else 0)
         self.recoder()
+        self.save_new_data()
 
 
 if __name__ == '__main__':

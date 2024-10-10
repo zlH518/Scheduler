@@ -554,3 +554,57 @@
 2024-10-09 21:46:16,321 - INFO - the number of task is 1083
 2024-10-09 21:46:16,322 - INFO - start_time:106
 2024-10-09 21:46:26,760 - INFO - Data has been recorded for FCFS
+2024-10-10 10:47:18,571 - INFO - 
+
+2024-10-10 10:47:18,572 - INFO - 2024-10-10 10:47:18.572460
+2024-10-10 10:47:18,572 - INFO - file:./data/mydata1248.csv read success!
+2024-10-10 10:47:18,626 - INFO - all files was read done!
+2024-10-10 10:47:18,626 - INFO - the number of task is 1083
+2024-10-10 10:47:18,626 - INFO - start_time:106
+2024-10-10 10:47:29,438 - INFO - Data has been recorded for FCFS
+2024-10-10 10:56:29,027 - INFO - 
+
+2024-10-10 10:56:29,027 - INFO - 2024-10-10 10:56:29.027737
+2024-10-10 10:56:29,027 - INFO - file:./data/mydata1248.csv read success!
+2024-10-10 10:56:29,083 - INFO - all files was read done!
+2024-10-10 10:56:29,083 - INFO - the number of task is 1083
+2024-10-10 10:56:29,083 - INFO - start_time:106
+2024-10-10 10:56:39,854 - INFO - Data has been recorded for FCFS
+2024-10-10 10:56:40,734 - INFO - all files was read done!
+2024-10-10 10:56:40,734 - INFO - the number of task is 0
+2024-10-10 10:57:40,334 - INFO - 
+
+2024-10-10 10:57:40,334 - INFO - 2024-10-10 10:57:40.334693
+2024-10-10 10:57:40,334 - INFO - file:./data/mydata1248.csv read success!
+2024-10-10 10:57:40,681 - INFO - all files was read done!
+2024-10-10 10:57:40,681 - INFO - the number of task is 1083
+2024-10-10 10:57:40,681 - INFO - start_time:106
+2024-10-10 10:59:19,733 - INFO - Data has been recorded for FCFS
+2024-10-10 11:03:28,437 - INFO - 
+
+2024-10-10 11:03:28,438 - INFO - 2024-10-10 11:03:28.438811
+2024-10-10 11:03:28,438 - INFO - file:./data/mydata1248.csv read success!
+2024-10-10 11:03:28,495 - INFO - all files was read done!
+2024-10-10 11:03:28,495 - INFO - the number of task is 1083
+2024-10-10 11:03:28,495 - INFO - start_time:106
+2024-10-10 11:03:39,357 - INFO - Data has been recorded for FCFS
+2024-10-10 11:03:39,384 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-10 11:03:39,438 - INFO - all files was read done!
+2024-10-10 11:03:39,438 - INFO - the number of task is 1083
+2024-10-10 11:03:39,438 - INFO - start_time:106
+2024-10-10 11:03:50,241 - INFO - Data has been recorded for FCFS_With_Migrate
+2024-10-10 11:04:51,915 - INFO - 
+
+2024-10-10 11:04:51,915 - INFO - 2024-10-10 11:04:51.915040
+2024-10-10 11:04:51,915 - INFO - file:./data/mydata1248.csv read success!
+2024-10-10 11:04:51,968 - INFO - all files was read done!
+2024-10-10 11:04:51,968 - INFO - the number of task is 1083
+2024-10-10 11:04:51,968 - INFO - start_time:106
+2024-10-10 11:05:25,894 - INFO - 
+
+2024-10-10 11:05:25,895 - INFO - 2024-10-10 11:05:25.894944
+2024-10-10 11:05:25,895 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-10 11:05:25,951 - INFO - all files was read done!
+2024-10-10 11:05:25,951 - INFO - the number of task is 1083
+2024-10-10 11:05:25,951 - INFO - start_time:106
+2024-10-10 11:05:37,044 - INFO - Data has been recorded for FCFS_With_Migrate

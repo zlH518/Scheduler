@@ -1,7 +1,9 @@
 from FCFS import FCFS
+from FCFS_with_migrate import FCFS_With_migrate
 from task import Task
 from node import Node
 import tool
+import config
 
 '''
 FCFS: First Come First Sever, 先到先服务算法,先拿单纯的FCFS和增加了迁移的相比较
@@ -16,16 +18,18 @@ NF: Next Fit, 循环适应算法
 
 if __name__ == '__main__':
     # algorithms = [FCFS, Buddy, SJF, BF, WF, NF]
-    algorithms = [FCFS]
+    algorithms = [FCFS_With_migrate]
     algorithm_names = []
-    for algorithm in algorithms:
-        Task.reset()                            #创建任务
+    for index, algorithm in enumerate(algorithms):
+        # if index == 1:
+        #     Task.reset(config.new_data_file_path)                            #创建任务
+        # else:
+        #     Task.reset(config.file_path)
+        Task.reset(config.new_data_file_path)
         Node.reset()                            #创建节点
         algorithm()                             #算法初始化
         algorithm().run()                       #算法运行
-        # print(len(Task.completed_task_queue_time))
         algorithm_names.append(algorithm().algorithm_name)
-        # print(len(Task.Tasks))
 
     tool.plot_data(algorithm_names=algorithm_names)
 
