@@ -136,7 +136,7 @@ class FCFS_With_migrate:
                 current_time += config.step
             else:                   #迁移可能有收益
                 #首先查找所有可能解决的方案
-
+                pass
 
 
             current_time += config.step
