@@ -168,7 +168,8 @@ class FCFS_With_migrate:
             if len(wl) == 0:        #迁移没有收益
                 pass
             else:                   #迁移可能有收益
-                self.migrate(wl[0])     #进行迁移
+                pass
+                # self.migrate(wl[0])     #进行迁移
 
 
 
