@@ -608,3 +608,10 @@
 2024-10-10 11:05:25,951 - INFO - the number of task is 1083
 2024-10-10 11:05:25,951 - INFO - start_time:106
 2024-10-10 11:05:37,044 - INFO - Data has been recorded for FCFS_With_Migrate
+2024-10-10 22:30:31,873 - INFO - 
+
+2024-10-10 22:30:31,874 - INFO - 2024-10-10 22:30:31.874875
+2024-10-10 22:30:31,874 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-10 22:30:31,932 - INFO - all files was read done!
+2024-10-10 22:30:31,932 - INFO - the number of task is 1083
+2024-10-10 22:30:31,933 - INFO - start_time:106

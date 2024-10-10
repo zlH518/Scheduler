@@ -93,20 +93,43 @@ class FCFS_With_migrate:
                             if not placed:
                                 flag = False
                                 break
-                        if flag:    #表示这个方案都满足条件，则选取代价最高的
+                        if flag:    #表示这个方案都满足条件，则选取代价最低的
                             if valid_combinations is None:
                                 valid_combinations = combo
                             elif target_task.pre_queue_time >= sum(task.migration_cost for task in combo) and sum(task.migration_cost for task in combo)<sum(task.migration_cost for task in valid_combinations):
                                 valid_combinations = combo
-
+            return valid_combinations
             #现在就获取到了当前节点中收益最高的迁移方案
 
         #依次查找所有的节点，查找每个节点中收益最高的方案，再查找所有节点中收益最高的方案
         best_combination = None
         best_node = None
         for node in self.nodes:
-
-
+            valid_combination = find_movement_combinations(node.node_id, target)
+            if best_combination is None:
+                best_node = node
+                best_combination = valid_combination
+            else:
+                if sum(task.migration_cost for task in best_combination) > sum(task.migration_cost for task in valid_combination):
+                    best_combination = valid_combination
+                    best_node = node
+        if best_combination is not None:        #如果存在可以替换的方案，则开始替换
+            #从目标节点挪出任务
+            for task in best_combination:
+                best_node.empty_cards += task.cards
+                best_node.tasks.remove(task)
+            #将目标任务放到节点中
+            best_node.tasks.append(target)
+            #将挪出来的任务放置到其他节点中去
+            remain_node = self.nodes[:best_node.node_id] + self.nodes[best_node.node_id+1:]
+            flag = True
+            for item in best_combination:
+                for node in sorted(remain_node):
+                    if node.empty_cards >= item.cards:
+                        node.empty_cards -= item.cards
+                        node.tasks.append(item)
+            return True
+        return False
 
 
     def run(self):
