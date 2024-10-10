@@ -62,41 +62,49 @@ class FCFS_With_migrate:
                     # print(str(task.task_id) + '号任务已被释放')
                     del node.tasks[index2]                          #删除任务
 
+    def migrate(self, target):
+        def find_movement_combinations(node_id, target_task):
+            requirement_cards = target_task.cards
+            current_node = self.nodes[node_id]
+            current_used_cards = sum(task.cards for task in current_node.tasks)
+            current_free_cards = config.cards_per_node - current_used_cards
+            space_to_free = requirement_cards - current_free_cards
 
-    def find_movement_combinations(self, node_id, task):
-        requirement_cards = task.cards
-        current_node = self.nodes[node_id]
-        current_used_cards = sum(task.cards for task in current_node.tasks)
-        current_free_cards = config.cards_per_node - current_used_cards
-        space_to_free = requirement_cards - current_free_cards
+            if space_to_free <= 0:
+                return None
+            valid_combinations = None
 
-        if space_to_free <= 0:
-            return None
-        valid_combinations = []
-
-        for r in range(1,len(current_node.tasks)+1):
-            for combo in combinations(current_node.tasks, r):
-                total_space_free = sum(task.cards for task in combo)
-                if total_space_free >= space_to_free:   #满足条件1:释放之后空间足够了
-                    # valid_combinations.append(combo)
-                    #开始判断条件2:迁移出来的任务是否都有地方可以存放
-                    copy_node = copy.deepcopy(self.nodes[:node_id]) + copy.deepcopy(self.nodes[node_id+1:])
-                    remain_node = copy.deepcopy(copy_node)
-                    flag = True
-                    for item in combo:
-                        placed = False
-                        for node in sorted(remain_node):
-                            if node.empty_cards >= item.cards:
-                                placed = True
-                                node.empty_cards -= item.cards
+            for r in range(1,len(current_node.tasks)+1):
+                for combo in combinations(current_node.tasks, r):
+                    total_space_free = sum(task.cards for task in combo)
+                    if total_space_free >= space_to_free:   #满足条件1:释放之后空间足够了
+                        # valid_combinations.append(combo)
+                        #开始判断条件2:迁移出来的任务是否都有地方可以存放
+                        copy_node = copy.deepcopy(self.nodes[:node_id]) + copy.deepcopy(self.nodes[node_id+1:])
+                        remain_node = copy.deepcopy(copy_node)
+                        flag = True
+                        for item in combo:
+                            placed = False
+                            for node in sorted(remain_node):
+                                if node.empty_cards >= item.cards:
+                                    placed = True
+                                    node.empty_cards -= item.cards
+                                    break
+                            if not placed:
+                                flag = False
                                 break
-                        if not placed:
-                            flag = False
-                            break
-                    if flag:
-                        valid_combinations.append(combo)
-        #现在就获取到了当前节点中可以迁移的组合，然后开始选取这个组合中收益最高的
-        return valid_combinations
+                        if flag:    #表示这个方案都满足条件，则选取代价最高的
+                            if valid_combinations is None:
+                                valid_combinations = combo
+                            elif target_task.pre_queue_time >= sum(task.migration_cost for task in combo) and sum(task.migration_cost for task in combo)<sum(task.migration_cost for task in valid_combinations):
+                                valid_combinations = combo
+
+            #现在就获取到了当前节点中收益最高的迁移方案
+
+        #依次查找所有的节点，查找每个节点中收益最高的方案，再查找所有节点中收益最高的方案
+        best_combination = None
+        best_node = None
+        for node in self.nodes:
 
 
 
@@ -131,12 +139,12 @@ class FCFS_With_migrate:
                 else:  # 找不到可用的节点
                     continue
 
-            pass
+            pass    #TODO:迁移策略的完善
             if len(wl) == 0:        #迁移没有收益
-                current_time += config.step
-            else:                   #迁移可能有收益
-                #首先查找所有可能解决的方案
                 pass
+            else:                   #迁移可能有收益
+                self.migrate(wl[0])     #进行迁移
+
 
 
             current_time += config.step
