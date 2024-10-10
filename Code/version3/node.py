@@ -22,6 +22,9 @@ class Node:
             return self.node_id == other.node_id
         return False
 
+    def __lt__(self, other):
+        return self.empty_cards < other.empty_cards
+
     def __bool__(self):
         return self.empty_cards != 0
 

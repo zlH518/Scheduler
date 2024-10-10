@@ -85,7 +85,7 @@ if __name__ == '__main__':
     print(Task.average_queue_time)
     print(Task.TaskId)
 
-    Task.reset()
+    Task.reset(config.file_path)
     Task.Tasks[0].queue_time = 10
     Task.Tasks[2].queue_time = 15
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     print(Task.average_queue_time)
     print(Task.TaskId)
 
-    Task.reset()
+    Task.reset(config.file_path)
     print(len(Task.Tasks))
     print(Task.completed_task_queue_time)
     print(Task.average_queue_time)

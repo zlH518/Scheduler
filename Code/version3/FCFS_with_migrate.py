@@ -6,6 +6,7 @@ from log import logger
 import json
 import copy
 from task import Task
+from itertools import combinations
 
 class FCFS_With_migrate:
     def __init__(self):
@@ -62,6 +63,44 @@ class FCFS_With_migrate:
                     del node.tasks[index2]                          #删除任务
 
 
+    def find_movement_combinations(self, node_id, task):
+        requirement_cards = task.cards
+        current_node = self.nodes[node_id]
+        current_used_cards = sum(task.cards for task in current_node.tasks)
+        current_free_cards = config.cards_per_node - current_used_cards
+        space_to_free = requirement_cards - current_free_cards
+
+        if space_to_free <= 0:
+            return None
+        valid_combinations = []
+
+        for r in range(1,len(current_node.tasks)+1):
+            for combo in combinations(current_node.tasks, r):
+                total_space_free = sum(task.cards for task in combo)
+                if total_space_free >= space_to_free:   #满足条件1:释放之后空间足够了
+                    # valid_combinations.append(combo)
+                    #开始判断条件2:迁移出来的任务是否都有地方可以存放
+                    copy_node = copy.deepcopy(self.nodes[:node_id]) + copy.deepcopy(self.nodes[node_id+1:])
+                    remain_node = copy.deepcopy(copy_node)
+                    flag = True
+                    for item in combo:
+                        placed = False
+                        for node in sorted(remain_node):
+                            if node.empty_cards >= item.cards:
+                                placed = True
+                                node.empty_cards -= item.cards
+                                break
+                        if not placed:
+                            flag = False
+                            break
+                    if flag:
+                        valid_combinations.append(combo)
+        #现在就获取到了当前节点中可以迁移的组合，然后开始选取这个组合中收益最高的
+        return valid_combinations
+
+
+
+
     def run(self):
         start_time = self.tasks[0].create_time
         current_time = start_time
@@ -96,6 +135,7 @@ class FCFS_With_migrate:
             if len(wl) == 0:        #迁移没有收益
                 current_time += config.step
             else:                   #迁移可能有收益
+                #首先查找所有可能解决的方案
 
 
 
