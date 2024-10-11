@@ -39,9 +39,9 @@ class FCFS_With_migrate:
 
     def addTask(self, current_time, task):
         node_index = None
-        for index1, node in enumerate(self.nodes):
+        for index1, node in enumerate(sorted(self.nodes, reverse=True)):
             if node.empty_cards >= task.cards:
-                node_index = index1
+                node_index = node.node_id
                 break
         if node_index is None:
             return False
@@ -62,7 +62,7 @@ class FCFS_With_migrate:
                     # print(str(task.task_id) + '号任务已被释放')
                     del node.tasks[index2]                          #删除任务
 
-    def migrate(self, target):
+    def migrate(self, target, current_time):
         def find_movement_combinations(node_id, target_task):
             requirement_cards = target_task.cards
             current_node = self.nodes[node_id]
@@ -104,6 +104,8 @@ class FCFS_With_migrate:
         #依次查找所有的节点，查找每个节点中收益最高的方案，再查找所有节点中收益最高的方案
         best_combination = None
         best_node = None
+        if sum(node.empty_cards for node in self.nodes) < target.cards:
+            return False
         for node in self.nodes:
             valid_combination = find_movement_combinations(node.node_id, target)
             if valid_combination is None:
@@ -121,7 +123,10 @@ class FCFS_With_migrate:
                 best_node.empty_cards += task.cards
                 best_node.tasks.remove(task)
             #将目标任务放到节点中
+            target.real_start_time = current_time
+            target.queue_time = current_time - target.cards
             best_node.tasks.append(target)
+            best_node.empty_cards -= target.cards
             #将挪出来的任务放置到其他节点中去
             remain_node = self.nodes[:best_node.node_id] + self.nodes[best_node.node_id+1:]
             flag = True
@@ -130,6 +135,7 @@ class FCFS_With_migrate:
                     if node.empty_cards >= item.cards:
                         node.empty_cards -= item.cards
                         node.tasks.append(item)
+                        break
             return True
         return False
 
@@ -169,8 +175,8 @@ class FCFS_With_migrate:
                 pass
             else:                   #迁移可能有收益
                 pass
-                # self.migrate(wl[0])     #进行迁移
-
+                if self.migrate(wl[0], current_time):     #进行迁移
+                    del wl[0]
 
 
             current_time += config.step

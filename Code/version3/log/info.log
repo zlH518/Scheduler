@@ -651,3 +651,317 @@
 2024-10-10 22:49:10,915 - INFO - the number of task is 1083
 2024-10-10 22:49:10,916 - INFO - start_time:106
 2024-10-10 22:49:21,366 - INFO - Data has been recorded for FCFS_With_Migrate
+2024-10-11 10:36:41,773 - INFO - 
+
+2024-10-11 10:36:41,774 - INFO - 2024-10-11 10:36:41.774291
+2024-10-11 10:36:41,775 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-11 10:36:41,830 - INFO - all files was read done!
+2024-10-11 10:36:41,831 - INFO - the number of task is 1083
+2024-10-11 10:36:41,831 - INFO - start_time:106
+2024-10-11 10:37:23,299 - INFO - 
+
+2024-10-11 10:37:23,299 - INFO - 2024-10-11 10:37:23.299562
+2024-10-11 10:37:23,299 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-11 10:37:23,651 - INFO - all files was read done!
+2024-10-11 10:37:23,651 - INFO - the number of task is 1083
+2024-10-11 10:37:23,651 - INFO - start_time:106
+2024-10-11 10:40:47,280 - INFO - 
+
+2024-10-11 10:40:47,282 - INFO - 2024-10-11 10:40:47.282146
+2024-10-11 10:40:47,282 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-11 10:40:47,338 - INFO - all files was read done!
+2024-10-11 10:40:47,339 - INFO - the number of task is 1083
+2024-10-11 10:40:47,339 - INFO - start_time:106
+2024-10-11 10:41:21,262 - INFO - 
+
+2024-10-11 10:41:21,262 - INFO - 2024-10-11 10:41:21.262468
+2024-10-11 10:41:21,262 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-11 10:41:21,613 - INFO - all files was read done!
+2024-10-11 10:41:21,613 - INFO - the number of task is 1083
+2024-10-11 10:41:21,613 - INFO - start_time:106
+2024-10-11 10:54:40,205 - INFO - 
+
+2024-10-11 10:54:40,205 - INFO - 2024-10-11 10:54:40.205796
+2024-10-11 10:54:40,205 - INFO - file:./data/data_afterFCFS1248.xlsx read success!
+2024-10-11 10:54:40,545 - INFO - all files was read done!
+2024-10-11 10:54:40,545 - INFO - the number of task is 1083
+2024-10-11 10:54:40,545 - INFO - start_time:106
+2024-10-11 11:04:42,687 - INFO - 
+
+2024-10-11 11:04:42,689 - INFO - 2024-10-11 11:04:42.689152
+2024-10-11 11:04:42,689 - INFO - all files was read done!
+2024-10-11 11:04:42,689 - INFO - the number of task is 0
+2024-10-11 11:05:33,848 - INFO - 
+
+2024-10-11 11:05:33,848 - INFO - 2024-10-11 11:05:33.848193
+2024-10-11 11:05:33,849 - INFO - file:./data/test.csv read success!
+2024-10-11 11:05:33,850 - INFO - all files was read done!
+2024-10-11 11:05:33,850 - INFO - the number of task is 16
+2024-10-11 11:05:33,850 - INFO - start_time:106
+2024-10-11 11:05:33,909 - INFO - Data has been recorded for FCFS
+2024-10-11 11:06:09,530 - INFO - 
+
+2024-10-11 11:06:09,530 - INFO - 2024-10-11 11:06:09.530127
+2024-10-11 11:06:09,530 - INFO - file:./data/test.csv read success!
+2024-10-11 11:06:09,531 - INFO - all files was read done!
+2024-10-11 11:06:09,531 - INFO - the number of task is 16
+2024-10-11 11:06:09,531 - INFO - start_time:106
+2024-10-11 11:06:09,594 - INFO - Data has been recorded for FCFS
+2024-10-11 11:07:45,669 - INFO - 
+
+2024-10-11 11:07:45,669 - INFO - 2024-10-11 11:07:45.669894
+2024-10-11 11:07:45,669 - INFO - file:./data/test.csv read success!
+2024-10-11 11:07:45,670 - INFO - all files was read done!
+2024-10-11 11:07:45,670 - INFO - the number of task is 16
+2024-10-11 11:07:45,670 - INFO - start_time:106
+2024-10-11 11:07:45,729 - INFO - Data has been recorded for FCFS
+2024-10-11 11:09:42,424 - INFO - 
+
+2024-10-11 11:09:42,424 - INFO - 2024-10-11 11:09:42.424695
+2024-10-11 11:09:42,425 - INFO - file:./data/test.csv read success!
+2024-10-11 11:09:42,425 - INFO - all files was read done!
+2024-10-11 11:09:42,425 - INFO - the number of task is 16
+2024-10-11 11:09:42,425 - INFO - start_time:106
+2024-10-11 11:09:42,485 - INFO - Data has been recorded for FCFS
+2024-10-11 11:12:11,330 - INFO - 
+
+2024-10-11 11:12:11,330 - INFO - 2024-10-11 11:12:11.330477
+2024-10-11 11:12:11,330 - INFO - file:./data/test.csv read success!
+2024-10-11 11:12:11,331 - INFO - all files was read done!
+2024-10-11 11:12:11,331 - INFO - the number of task is 16
+2024-10-11 11:12:11,331 - INFO - start_time:106
+2024-10-11 11:12:11,391 - INFO - Data has been recorded for FCFS
+2024-10-11 11:14:23,883 - INFO - 
+
+2024-10-11 11:14:23,883 - INFO - 2024-10-11 11:14:23.883453
+2024-10-11 11:14:23,883 - INFO - file:./data/test.csv read success!
+2024-10-11 11:14:23,884 - INFO - all files was read done!
+2024-10-11 11:14:23,884 - INFO - the number of task is 16
+2024-10-11 11:14:23,884 - INFO - start_time:106
+2024-10-11 11:14:23,946 - INFO - Data has been recorded for FCFS
+2024-10-11 11:29:47,821 - INFO - 
+
+2024-10-11 11:29:47,821 - INFO - 2024-10-11 11:29:47.821821
+2024-10-11 11:29:47,821 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 11:29:47,882 - INFO - all files was read done!
+2024-10-11 11:29:47,882 - INFO - the number of task is 1083
+2024-10-11 11:29:47,883 - INFO - start_time:106
+2024-10-11 11:29:48,337 - INFO - Data has been recorded for FCFS
+2024-10-11 11:30:31,716 - INFO - 
+
+2024-10-11 11:30:31,716 - INFO - 2024-10-11 11:30:31.716145
+2024-10-11 11:30:31,716 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 11:30:31,772 - INFO - all files was read done!
+2024-10-11 11:30:31,772 - INFO - the number of task is 1083
+2024-10-11 11:30:31,772 - INFO - start_time:106
+2024-10-11 11:30:32,287 - INFO - Data has been recorded for FCFS
+2024-10-11 11:31:44,893 - INFO - 
+
+2024-10-11 11:31:44,893 - INFO - 2024-10-11 11:31:44.893722
+2024-10-11 11:31:44,893 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 11:31:44,949 - INFO - all files was read done!
+2024-10-11 11:31:44,950 - INFO - the number of task is 1083
+2024-10-11 11:31:44,950 - INFO - start_time:106
+2024-10-11 11:31:55,905 - INFO - Data has been recorded for FCFS
+2024-10-11 11:33:38,840 - INFO - 
+
+2024-10-11 11:33:38,840 - INFO - 2024-10-11 11:33:38.840935
+2024-10-11 11:33:38,840 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 11:33:38,895 - INFO - all files was read done!
+2024-10-11 11:33:38,895 - INFO - the number of task is 1083
+2024-10-11 11:33:38,896 - INFO - start_time:106
+2024-10-11 11:34:01,890 - INFO - Data has been recorded for FCFS
+2024-10-11 11:36:12,695 - INFO - 
+
+2024-10-11 11:36:12,696 - INFO - 2024-10-11 11:36:12.696353
+2024-10-11 11:36:12,696 - INFO - file:./data/test.csv read success!
+2024-10-11 11:36:12,696 - INFO - all files was read done!
+2024-10-11 11:36:12,697 - INFO - the number of task is 16
+2024-10-11 11:36:12,697 - INFO - start_time:106
+2024-10-11 11:36:12,757 - INFO - Data has been recorded for FCFS_With_Migrate
+2024-10-11 11:37:40,523 - INFO - 
+
+2024-10-11 11:37:40,524 - INFO - 2024-10-11 11:37:40.524307
+2024-10-11 11:37:40,524 - INFO - file:./data/test.csv read success!
+2024-10-11 11:37:40,524 - INFO - all files was read done!
+2024-10-11 11:37:40,525 - INFO - the number of task is 19
+2024-10-11 11:37:40,525 - INFO - start_time:106
+2024-10-11 11:37:55,554 - INFO - 
+
+2024-10-11 11:37:55,554 - INFO - 2024-10-11 11:37:55.554001
+2024-10-11 11:37:55,554 - INFO - file:./data/test.csv read success!
+2024-10-11 11:37:55,555 - INFO - all files was read done!
+2024-10-11 11:37:55,555 - INFO - the number of task is 19
+2024-10-11 11:37:55,555 - INFO - start_time:106
+2024-10-11 11:37:55,599 - INFO - Data has been recorded for FCFS
+2024-10-11 11:39:35,009 - INFO - 
+
+2024-10-11 11:39:35,009 - INFO - 2024-10-11 11:39:35.009556
+2024-10-11 11:39:35,009 - INFO - file:./data/test.csv read success!
+2024-10-11 11:39:35,011 - INFO - all files was read done!
+2024-10-11 11:39:35,011 - INFO - the number of task is 19
+2024-10-11 11:39:35,012 - INFO - start_time:106
+2024-10-11 11:41:03,551 - INFO - 
+
+2024-10-11 11:41:03,551 - INFO - 2024-10-11 11:41:03.551869
+2024-10-11 11:41:03,551 - INFO - file:./data/data_test.csv read success!
+2024-10-11 11:41:03,552 - INFO - all files was read done!
+2024-10-11 11:41:03,552 - INFO - the number of task is 16
+2024-10-11 11:41:03,552 - INFO - start_time:106
+2024-10-11 11:41:21,945 - INFO - 
+
+2024-10-11 11:41:21,945 - INFO - 2024-10-11 11:41:21.945994
+2024-10-11 11:41:21,945 - INFO - file:./data/data_test.csv read success!
+2024-10-11 11:41:21,947 - INFO - all files was read done!
+2024-10-11 11:41:21,947 - INFO - the number of task is 16
+2024-10-11 11:41:38,983 - INFO - start_time:106
+2024-10-11 11:42:18,294 - INFO - 
+
+2024-10-11 11:42:18,294 - INFO - 2024-10-11 11:42:18.294466
+2024-10-11 11:42:18,294 - INFO - file:./data/data_test.csv read success!
+2024-10-11 11:42:18,295 - INFO - all files was read done!
+2024-10-11 11:42:18,295 - INFO - the number of task is 16
+2024-10-11 11:42:18,295 - INFO - start_time:106
+2024-10-11 11:42:18,327 - INFO - Data has been recorded for FCFS
+2024-10-11 11:42:56,319 - INFO - 
+
+2024-10-11 11:42:56,320 - INFO - 2024-10-11 11:42:56.320878
+2024-10-11 11:42:56,320 - INFO - file:./data/test.csv read success!
+2024-10-11 11:42:56,320 - INFO - all files was read done!
+2024-10-11 11:42:56,320 - INFO - the number of task is 19
+2024-10-11 11:42:56,321 - INFO - start_time:106
+2024-10-11 11:42:56,362 - INFO - Data has been recorded for FCFS
+2024-10-11 11:43:46,923 - INFO - 
+
+2024-10-11 11:43:46,923 - INFO - 2024-10-11 11:43:46.923649
+2024-10-11 11:43:46,923 - INFO - file:./data/test.csv read success!
+2024-10-11 11:43:46,924 - INFO - all files was read done!
+2024-10-11 11:43:46,924 - INFO - the number of task is 19
+2024-10-11 11:43:46,924 - INFO - start_time:106
+2024-10-11 11:43:46,966 - INFO - Data has been recorded for FCFS
+2024-10-11 11:44:12,102 - INFO - 
+
+2024-10-11 11:44:12,102 - INFO - 2024-10-11 11:44:12.102155
+2024-10-11 11:44:12,102 - INFO - file:./data/test.csv read success!
+2024-10-11 11:44:12,103 - INFO - all files was read done!
+2024-10-11 11:44:12,103 - INFO - the number of task is 19
+2024-10-11 11:44:12,104 - INFO - start_time:106
+2024-10-11 11:44:12,154 - INFO - Data has been recorded for FCFS
+2024-10-11 11:46:25,853 - INFO - 
+
+2024-10-11 11:46:25,853 - INFO - 2024-10-11 11:46:25.853004
+2024-10-11 11:46:25,853 - INFO - file:./data/test_data.csv read success!
+2024-10-11 11:46:25,854 - INFO - all files was read done!
+2024-10-11 11:46:25,854 - INFO - the number of task is 19
+2024-10-11 11:46:25,854 - INFO - start_time:106
+2024-10-11 11:47:12,531 - INFO - 
+
+2024-10-11 11:47:12,531 - INFO - 2024-10-11 11:47:12.531470
+2024-10-11 11:47:12,531 - INFO - file:./data/test_data.csv read success!
+2024-10-11 11:47:12,534 - INFO - all files was read done!
+2024-10-11 11:47:12,534 - INFO - the number of task is 19
+2024-10-11 11:47:19,077 - INFO - start_time:106
+2024-10-11 13:54:33,517 - INFO - 
+
+2024-10-11 13:54:33,517 - INFO - 2024-10-11 13:54:33.517669
+2024-10-11 13:54:33,517 - INFO - file:./data/test_data.csv read success!
+2024-10-11 13:54:33,519 - INFO - all files was read done!
+2024-10-11 13:54:33,519 - INFO - the number of task is 19
+2024-10-11 13:54:41,379 - INFO - start_time:106
+2024-10-11 14:19:22,289 - INFO - 
+
+2024-10-11 14:19:22,289 - INFO - 2024-10-11 14:19:22.289614
+2024-10-11 14:19:22,289 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:19:22,289 - INFO - all files was read done!
+2024-10-11 14:19:22,289 - INFO - the number of task is 19
+2024-10-11 14:19:27,826 - INFO - start_time:106
+2024-10-11 14:21:58,488 - INFO - 
+
+2024-10-11 14:21:58,488 - INFO - 2024-10-11 14:21:58.488182
+2024-10-11 14:21:58,488 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:21:58,488 - INFO - all files was read done!
+2024-10-11 14:21:58,489 - INFO - the number of task is 19
+2024-10-11 14:21:58,489 - INFO - start_time:106
+2024-10-11 14:22:19,318 - INFO - 
+
+2024-10-11 14:22:19,318 - INFO - 2024-10-11 14:22:19.318471
+2024-10-11 14:22:19,318 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:22:19,318 - INFO - all files was read done!
+2024-10-11 14:22:19,318 - INFO - the number of task is 19
+2024-10-11 14:22:21,405 - INFO - start_time:106
+2024-10-11 14:25:38,231 - INFO - 
+
+2024-10-11 14:25:38,231 - INFO - 2024-10-11 14:25:38.231531
+2024-10-11 14:25:38,231 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:25:38,231 - INFO - all files was read done!
+2024-10-11 14:25:38,231 - INFO - the number of task is 19
+2024-10-11 14:25:39,859 - INFO - start_time:106
+2024-10-11 14:26:04,630 - INFO - 
+
+2024-10-11 14:26:04,630 - INFO - 2024-10-11 14:26:04.630906
+2024-10-11 14:26:04,630 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:26:04,630 - INFO - all files was read done!
+2024-10-11 14:26:04,630 - INFO - the number of task is 19
+2024-10-11 14:26:05,957 - INFO - start_time:106
+2024-10-11 14:29:27,238 - INFO - 
+
+2024-10-11 14:29:27,238 - INFO - 2024-10-11 14:29:27.238800
+2024-10-11 14:29:27,238 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:29:27,239 - INFO - all files was read done!
+2024-10-11 14:29:27,239 - INFO - the number of task is 19
+2024-10-11 14:29:27,239 - INFO - start_time:106
+2024-10-11 14:29:59,972 - INFO - 
+
+2024-10-11 14:29:59,972 - INFO - 2024-10-11 14:29:59.972895
+2024-10-11 14:29:59,972 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:29:59,972 - INFO - all files was read done!
+2024-10-11 14:29:59,972 - INFO - the number of task is 19
+2024-10-11 14:30:03,680 - INFO - start_time:106
+2024-10-11 14:31:03,581 - INFO - 
+
+2024-10-11 14:31:03,581 - INFO - 2024-10-11 14:31:03.581231
+2024-10-11 14:31:03,581 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:31:03,582 - INFO - all files was read done!
+2024-10-11 14:31:03,582 - INFO - the number of task is 19
+2024-10-11 14:31:03,582 - INFO - start_time:106
+2024-10-11 14:31:03,625 - INFO - Data has been recorded for FCFS_With_Migrate
+2024-10-11 14:33:22,443 - INFO - 
+
+2024-10-11 14:33:22,445 - INFO - 2024-10-11 14:33:22.445522
+2024-10-11 14:33:22,445 - INFO - file:./data/test_data.csv read success!
+2024-10-11 14:33:22,445 - INFO - all files was read done!
+2024-10-11 14:33:22,445 - INFO - the number of task is 19
+2024-10-11 14:33:22,445 - INFO - start_time:106
+2024-10-11 14:33:22,492 - INFO - Data has been recorded for FCFS
+2024-10-11 14:33:42,999 - INFO - 
+
+2024-10-11 14:33:42,999 - INFO - 2024-10-11 14:33:42.999271
+2024-10-11 14:33:42,999 - INFO - file:./data/data_for1248.csv read success!
+2024-10-11 14:33:42,999 - INFO - all files was read done!
+2024-10-11 14:33:42,999 - INFO - the number of task is 19
+2024-10-11 14:33:42,999 - INFO - start_time:106
+2024-10-11 14:33:43,043 - INFO - Data has been recorded for FCFS
+2024-10-11 14:35:09,845 - INFO - 
+
+2024-10-11 14:35:09,847 - INFO - 2024-10-11 14:35:09.847613
+2024-10-11 14:35:09,847 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 14:35:09,901 - INFO - all files was read done!
+2024-10-11 14:35:09,901 - INFO - the number of task is 1083
+2024-10-11 14:35:09,901 - INFO - start_time:106
+2024-10-11 14:35:42,077 - INFO - Data has been recorded for FCFS
+2024-10-11 14:37:20,424 - INFO - 
+
+2024-10-11 14:37:20,424 - INFO - 2024-10-11 14:37:20.424543
+2024-10-11 14:37:20,424 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 14:37:20,481 - INFO - all files was read done!
+2024-10-11 14:37:20,481 - INFO - the number of task is 1083
+2024-10-11 14:37:20,481 - INFO - start_time:106
+2024-10-11 14:39:04,623 - INFO - Data has been recorded for FCFS_With_Migrate
+2024-10-11 14:41:54,092 - INFO - 
+
+2024-10-11 14:41:54,092 - INFO - 2024-10-11 14:41:54.092102
+2024-10-11 14:41:54,092 - INFO - file:./data/mydata1248.csv read success!
+2024-10-11 14:41:54,150 - INFO - all files was read done!
+2024-10-11 14:41:54,150 - INFO - the number of task is 1083
+2024-10-11 14:41:54,150 - INFO - start_time:106
+2024-10-11 14:43:35,866 - INFO - Data has been recorded for FCFS_With_Migrate

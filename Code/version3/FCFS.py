@@ -36,13 +36,12 @@ class FCFS:
             file.write(json_data)
         logger.log(f"Data has been recorded for {self.algorithm_name}")
 
-
     def save_new_data(self):
         tasks_data = [
             {
                 'create_time': task.create_time,
                 'start_time': task.start_time,
-                'cards': task.cards,
+                'cards': str(task.cards),  # 将 cards 转换为字符串
                 'gpu_time': task.gpu_time,
                 'duration_time': task.duration_time,
                 'migration_cost': task.migration_cost,
@@ -51,14 +50,13 @@ class FCFS:
             for task in Task.Tasks
         ]
         df = pd.DataFrame(tasks_data)
-        df.to_csv('./data/data_afterFCFS1248.xlsx', index=False)
-
+        df.to_csv(config.new_data_file_path, index=False, sep=',')
 
     def addTask(self, current_time, task):
         node_index = None
-        for index1, node in enumerate(self.nodes):
+        for index1, node in enumerate(sorted(self.nodes, reverse=True)):
             if node.empty_cards >= task.cards:
-                node_index = index1
+                node_index = node.node_id
                 break
         if node_index is None:
             return False
