@@ -119,7 +119,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
     plt.savefig('./experiment/Queue_time.png')
-    plt.close()
 
 
     #空闲卡比较
@@ -133,4 +132,15 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
     plt.savefig('./experiment/Free_cards.png')
-    plt.close()
+
+    #利用率比较
+    plt.figure(figsize=(10, 6))
+    for index, algorithm_name in enumerate(algorithm_names):
+        plt.plot(df['time'][index], df['scheduling_efficiency'][index], linestyle=line_styles[0], color=palette[index],
+                 label=algorithm_name)
+    plt.title('Schedule Efficiency Over Time')
+    plt.xlabel('Time')
+    plt.ylabel('Schedule Efficiency(%)')
+    plt.legend()
+    plt.show()
+    plt.savefig('./experiment/Schedule_Efficiency.png')

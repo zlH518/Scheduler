@@ -72,7 +72,6 @@ def plot_data(algorithm_names):
     plt.gca().spines['top'].set_visible(False)
     plt.savefig(os.path.join(config.experiment_data_path, "Free Cards.png"))
     plt.show()
-    plt.close()
 
 
     #画利用率
@@ -92,7 +91,9 @@ def plot_data(algorithm_names):
     plt.gca().spines['top'].set_visible(False)
     plt.savefig(os.path.join(config.experiment_data_path, "Scheduling Efficiency.png"))
     plt.show()
-    plt.close()
+
+
+
 
 
 
